@@ -1,9 +1,26 @@
 require('dotenv').config()
 const express = require('express')
+const logger = require('morgan')
+
+const router = require('./routes')
+
 const app = express()
 
+app.use(logger('dev'))
+app.use(express.json())
+
 app.get('/', function (req, res) {
-  res.send('Hello World')
+  res.json({ foo: 'bar' })
 })
 
-app.listen(3000)
+app.use('/api', router)
+
+const PORT = process.env.PORT || 3000
+const server = app.listen(PORT, () => {
+  console.log(`Starting development server at http://localhost:${PORT}`)
+})
+
+module.exports = {
+  app,
+  server,
+}
