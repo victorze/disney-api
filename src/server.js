@@ -6,6 +6,9 @@ const router = require('./routes')
 
 const app = express()
 
+const db = require('./model')
+db.sequelize.sync()
+
 app.use(logger('dev'))
 app.use(express.json())
 

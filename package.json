@@ -6,9 +6,9 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "lint": "eslint src",
+    "lint": "eslint src tests",
     "format": "prettier --write 'src/**/*.js' 'tests/**/*.js'",
-    "test": "PORT=4000 jest"
+    "test": "PORT=4000 jest --forceExit --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
