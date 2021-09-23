@@ -1,6 +1,8 @@
+const jwt = require("jsonwebtoken")
 const request = require('supertest')
-const { app, server } = require('../../src/server')
-const db = require('../../src/models')
+
+const { app, server } = require('../src/server')
+const db = require('../src/models')
 
 const User = db.User
 
@@ -46,5 +48,21 @@ describe('users', () => {
             })
         })
     })
+  })
+
+  test('Check password', () => {
+    const user = User.build(dummyUser)
+    user.setPassword(dummyUser.password)
+    expect(user.validPassword(dummyUser.password)).toBeTruthy()
+    expect(user.validPassword('secret')).toBeFalsy()
+  })
+
+  test('JWT', () => {
+    const user = User.build(dummyUser)
+    const token = user.generateJwt()
+    let decoded = jwt.verify(token, 'secret')
+
+    expect(decoded.email).toBe(user.email)
+    expect(() => jwt.verify(token, 'qwerty')).toThrow(jwt.JsonWebTokenError)
   })
 })

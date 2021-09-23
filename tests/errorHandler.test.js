@@ -1,5 +1,5 @@
 const request = require('supertest')
-const { app, server } = require('../../src/server')
+const { app, server } = require('../src/server')
 
 describe('Error handler', () => {
   afterAll(() => {

@@ -1,6 +1,6 @@
 const request = require('supertest')
-const { app, server } = require('../../src/server')
-const db = require('../../src/models')
+const { app, server } = require('../src/server')
+const db = require('../src/models')
 
 const Character = db.Character
 
