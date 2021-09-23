@@ -2,7 +2,8 @@ require('dotenv').config()
 const express = require('express')
 const logger = require('morgan')
 
-const router = require('./routes')
+const routes = require('./routes')
+const errors = require('./handlers/errors')
 
 const app = express()
 
@@ -17,7 +18,10 @@ app.get('/', function (req, res) {
   res.json({ foo: 'bar' })
 })
 
-app.use('/api', router)
+app.use('/api', routes)
+
+app.use(errors.notFound)
+app.use(errors.productionErrors)
 
 const PORT = process.env.PORT || 3000
 const server = app.listen(PORT, () => {

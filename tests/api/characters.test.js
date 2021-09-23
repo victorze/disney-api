@@ -9,14 +9,14 @@ const characters = [
     name: 'Jane',
     age: 33,
     weight: 88.5,
-    story: "Jane's story",
+    story: 'Jane story',
     image: 'Jane image link',
   },
   {
     name: 'Joe',
     age: 40,
     weight: 70.8,
-    story: "Joe's story",
+    story: `Joe story`,
     image: 'Joe image link',
   },
 ]
