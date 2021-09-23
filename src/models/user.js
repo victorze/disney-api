@@ -3,7 +3,6 @@ const crypto = require('crypto')
 const { DataTypes, Model } = require('sequelize')
 const jwt = require("jsonwebtoken")
 
-
 module.exports = (sequelize) => {
   class User extends Model {
     setPassword(password) {
@@ -29,10 +28,20 @@ module.exports = (sequelize) => {
 
   User.init(
     {
-      email: DataTypes.INTEGER,
-      name: DataTypes.STRING,
-      hash: DataTypes.STRING(64),
-      salt: DataTypes.STRING(16),
+      email: {
+        type: DataTypes.STRING(100),
+        unique: true,
+        allowNull: false
+      },
+      name: DataTypes.STRING(100),
+      hash: {
+        type: DataTypes.TEXT,
+        allowNull: false
+      },
+      salt: {
+        type: DataTypes.STRING(32),
+        allowNull: false
+      },
     },
     {
       sequelize,
