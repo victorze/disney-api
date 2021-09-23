@@ -4,6 +4,11 @@ const db = require('../models')
 const route = express.Router()
 const Character = db.Character
 
+route.post('/characters', async (req, res) => {
+  const character = await Character.create(req.body)
+  res.status(201).json(character)
+})
+
 route.get('/characters', async (req, res) => {
   const characters = await Character.findAll()
   res.json(characters)

@@ -30,6 +30,25 @@ describe('characters', () => {
     server.close()
   })
 
+  describe('POST /api/characters', () => {
+    test('Valid character created', (done) => {
+      const [character] = characters
+
+      request(app)
+        .post('/api/characters')
+        .send(character)
+        .end((err, res) => {
+          expect(res.status).toBe(201)
+          expect(res.body.name).toBe(character.name)
+          expect(res.body.age).toBe(character.age)
+          expect(res.body.weight).toBe(character.weight)
+          expect(res.body.story).toBe(character.story)
+          expect(res.body.image).toBe(character.image)
+          done()
+        })
+    })
+  })
+
   describe('GET /api/characters', () => {
     test('There are characters, return an array', (done) => {
       Character.bulkCreate(characters)
