@@ -3,7 +3,6 @@ const Sequelize = require('sequelize')
 const DB_DATABASE =
   process.env.DB_DATABASE + (process.env.NODE_ENV == 'test' ? 'test' : '')
 
-// pgcli -h localhost -p 5432 -U username postgres
 const sequelize = new Sequelize(
   DB_DATABASE,
   process.env.DB_USERNAME,

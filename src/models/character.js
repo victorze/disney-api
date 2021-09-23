@@ -8,7 +8,7 @@ module.exports = (sequelize) => {
       name: DataTypes.STRING,
       age: DataTypes.INTEGER,
       weight: DataTypes.FLOAT,
-      history: DataTypes.TEXT,
+      story: DataTypes.TEXT,
       image: DataTypes.TEXT,
     },
     {
