@@ -30,10 +30,38 @@ describe('characters', () => {
     server.close()
   })
 
+  describe('GET /api/characters', () => {
+    test('There are characters, return an array', (done) => {
+      Character.bulkCreate(characters)
+        .then(() => {
+          request(app)
+            .get('/api/characters')
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body).toBeInstanceOf(Array)
+              expect(res.body).toHaveLength(2)
+              done()
+            })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('There are no characters, return empty array', (done) => {
+      request(app)
+        .get('/api/characters')
+        .end((err, res) => {
+          expect(res.status).toBe(200)
+          expect(res.body).toBeInstanceOf(Array)
+          expect(res.body).toHaveLength(0)
+          done()
+        })
+    })
+  })
+
   describe('GET /api/characters/:id', () => {
     const [character] = characters
 
-    test('Character exist', (done) => {
+    test('Character exist, return character', (done) => {
       Character.create(character)
         .then((data) => {
           request(app)
@@ -51,7 +79,7 @@ describe('characters', () => {
         .catch((err) => done(err))
     })
 
-    test('Character does not exist', (done) => {
+    test('Character does not exist, return status 404', (done) => {
       request(app)
         .get('/api/characters/123')
         .end((err, res) => {
