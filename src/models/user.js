@@ -1,6 +1,8 @@
 const crypto = require('crypto')
 
 const { DataTypes, Model } = require('sequelize')
+const jwt = require("jsonwebtoken")
+
 
 module.exports = (sequelize) => {
   class User extends Model {
@@ -16,6 +18,12 @@ module.exports = (sequelize) => {
         .pbkdf2Sync(password, this.salt, 1000, 64, 'sha512')
         .toString('hex')
       return this.hash === hash
+    }
+
+    generateJwt() {
+      return jwt.sign({ email: this.email }, process.env.JWT_SECRET, {
+        expiresIn: '7d',
+      })
     }
   }
 
