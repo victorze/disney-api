@@ -2,6 +2,8 @@ const request = require('supertest')
 const { app, server } = require('../../src/server')
 const db = require('../../src/models')
 
+const Character = db.Character
+
 const characters = [
   {
     name: 'Jane',
@@ -13,7 +15,7 @@ const characters = [
   {
     name: 'Joe',
     age: 40,
-    weight: 70,
+    weight: 70.8,
     story: "Joe's story",
     image: 'Joe image link',
   },
@@ -21,7 +23,7 @@ const characters = [
 
 describe('characters', () => {
   beforeEach((done) => {
-    db.sequelize.sync({ force: true }).then(() => done())
+    Character.destroy({ truncate: true }).then(() => done())
   })
 
   afterAll(() => {
@@ -32,17 +34,17 @@ describe('characters', () => {
     const [character] = characters
 
     test('Character exist', (done) => {
-      db.Character.create(character)
+      Character.create(character)
         .then((data) => {
           request(app)
-            .get('/api/characters/1')
+            .get(`/api/characters/${data.id}`)
             .end((err, res) => {
               expect(res.status).toBe(200)
-              expect(res.body.name).toEqual(data.name)
-              expect(res.body.age).toEqual(data.age)
-              expect(res.body.weight).toEqual(data.weight)
-              expect(res.body.story).toEqual(data.story)
-              expect(res.body.image).toEqual(data.image)
+              expect(res.body.name).toBe(data.name)
+              expect(res.body.age).toBe(data.age)
+              expect(res.body.weight).toBe(data.weight)
+              expect(res.body.story).toBe(data.story)
+              expect(res.body.image).toBe(data.image)
               done()
             })
         })

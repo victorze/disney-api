@@ -8,9 +8,7 @@ const app = express()
 
 const db = require('./models')
 
-if (process.env.NODE_ENV !== 'test') {
-  db.sequelize.sync({ alter: true })
-}
+db.sequelize.sync({ alter: true })
 
 app.use(logger('dev'))
 app.use(express.json())
