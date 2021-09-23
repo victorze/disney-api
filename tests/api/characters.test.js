@@ -16,7 +16,7 @@ const characters = [
     name: 'Joe',
     age: 40,
     weight: 70.8,
-    story: `Joe story`,
+    story: 'Joe story',
     image: 'Joe image link',
   },
 ]
