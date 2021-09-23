@@ -19,5 +19,6 @@ const db = {}
 db.sequelize = sequelize
 
 db.Character = require('./character')(sequelize)
+db.User = require('./user')(sequelize)
 
 module.exports = db
