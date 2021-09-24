@@ -205,6 +205,30 @@ describe('users (auth)', () => {
         })
     })
 
+    test('When logging in, email is not case sensitive', (done) => {
+      const user = User.build(dummyUser)
+      user.setPassword(dummyUser.password)
+
+      user
+        .save()
+        .then((newUser) => {
+          request(app)
+            .post(`${basePath}/login`)
+            .send({
+              email: dummyUser.email.toUpperCase(),
+              password: dummyUser.password,
+            })
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body.token).toEqual(newUser.generateJwt())
+              done()
+            })
+        })
+        .catch((err) => {
+          done(err)
+        })
+    })
+
     test('Login without password, returns a status 400', (done) => {
       request(app)
         .post(`${basePath}/login`)
