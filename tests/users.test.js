@@ -12,9 +12,10 @@ const dummyUser = {
   name: 'foo',
   email: 'foo@email.com',
   password: 'foofoo',
+  confirmPassword: 'foofoo',
 }
 
-describe('users', () => {
+describe('users (auth)', () => {
   beforeEach((done) => {
     User.destroy({ truncate: true }).then(() => done())
   })
@@ -24,7 +25,7 @@ describe('users', () => {
   })
 
   describe('POST /api/auth/register', () => {
-    test('Register a user', (done) => {
+    test('A valid user should be created', (done) => {
       request(app)
         .post('/api/auth/register')
         .send(dummyUser)
@@ -48,6 +49,22 @@ describe('users', () => {
             })
         })
     })
+
+    test('A user with an invalid email should not be created', (done) => {
+      request(app)
+        .post('/api/auth/register')
+        .send({
+          ...dummyUser,
+          email: '@email.com',
+        })
+        .end((err, res) => {
+          expect(res.status).toBe(400)
+          expect(res.body).toBeInstanceOf(Array)
+          expect(res.body).toHaveLength(1)
+          expect(res.text.includes('email')).toBeTruthy()
+          done()
+        })
+    })
   })
 
   test('Check password', () => {
@@ -60,7 +77,7 @@ describe('users', () => {
   test('JWT', () => {
     const user = User.build(dummyUser)
     const token = user.generateJwt()
-    let decoded = jwt.verify(token, 'secret')
+    const decoded = jwt.verify(token, 'secret')
 
     expect(decoded.email).toBe(user.email)
     expect(() => jwt.verify(token, 'qwerty')).toThrow(jwt.JsonWebTokenError)

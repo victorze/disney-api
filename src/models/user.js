@@ -35,7 +35,7 @@ module.exports = (sequelize) => {
       },
       name: DataTypes.STRING(100),
       hash: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       salt: {

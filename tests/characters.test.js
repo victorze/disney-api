@@ -4,7 +4,7 @@ const db = require('../src/models')
 
 const Character = db.Character
 
-const characters = [
+const dummyCharacters = [
   {
     name: 'Jane',
     age: 33,
@@ -32,7 +32,7 @@ describe('characters', () => {
 
   describe('POST /api/characters', () => {
     test('Valid character created', (done) => {
-      const [character] = characters
+      const [character] = dummyCharacters
 
       request(app)
         .post('/api/characters')
@@ -51,7 +51,7 @@ describe('characters', () => {
 
   describe('GET /api/characters', () => {
     test('There are characters, return an array', (done) => {
-      Character.bulkCreate(characters)
+      Character.bulkCreate(dummyCharacters)
         .then(() => {
           request(app)
             .get('/api/characters')
@@ -78,7 +78,7 @@ describe('characters', () => {
   })
 
   describe('GET /api/characters/:id', () => {
-    const [character] = characters
+    const [character] = dummyCharacters
 
     test('Character exist, return character', (done) => {
       Character.create(character)
