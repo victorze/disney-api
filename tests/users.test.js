@@ -50,6 +50,22 @@ describe('users (auth)', () => {
         })
     })
 
+    test('If the passwords do not match, the user should not be created', (done) => {
+      request(app)
+        .post('/api/auth/register')
+        .send({
+          ...dummyUser,
+          confirmPassword: 'foo'
+        })
+        .end((err, res) => {
+          expect(res.status).toBe(400)
+          expect(res.body).toBeInstanceOf(Array)
+          expect(res.body).toHaveLength(1)
+          expect(res.text.includes('confirmPassword')).toBeTruthy()
+          done()
+        })
+    })
+
     test('A user with an invalid email should not be created', (done) => {
       request(app)
         .post('/api/auth/register')
