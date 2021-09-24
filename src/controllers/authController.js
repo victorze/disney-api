@@ -18,6 +18,17 @@ const register = async (req, res) => {
   }
 }
 
+const login = async (req, res) => {
+  const { email, password } = req.body
+  const [user] = await User.findAll({ where: { email } })
+
+  if (user.validPassword(password)) {
+    const token = user.generateJwt()
+    res.json({ token })
+  }
+}
+
 module.exports = {
   register: catchErrors(register),
+  login,
 }

@@ -132,8 +132,28 @@ describe('users (auth)', () => {
     })
   })
 
-  // describe(`POST ${basePath}/login`, () => {
-  // })
+  describe(`POST ${basePath}/login`, () => {
+    test('Login with correct credentials, returns a token', (done) => {
+      const user = User.build(dummyUser)
+      user.setPassword(dummyUser.password)
+
+      user
+        .save()
+        .then((newUser) => {
+          request(app)
+            .post(`${basePath}/login`)
+            .send({
+              email: dummyUser.email,
+              password: dummyUser.password,
+            })
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body.token).toEqual(newUser.generateJwt())
+              done()
+            })
+        })
+    })
+  })
 
   test('Check password', () => {
     const user = User.build(dummyUser)

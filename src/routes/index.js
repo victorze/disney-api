@@ -12,6 +12,7 @@ route.post(
   [validateRegister, emailToLowerCase],
   authController.register
 )
+route.post('/auth/login', authController.login)
 
 route.post('/characters', characterController.store)
 route.get('/characters', characterController.index)
