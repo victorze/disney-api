@@ -1,19 +1,17 @@
 const Joi = require('joi')
 
-const schema = Joi.object({
-  email: Joi.string()
-    .required()
-    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+const registerSchema = Joi.object({
+  email: Joi.string().required().email(),
 
   name: Joi.string().alphanum().min(3).max(30),
 
-  password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{6,30}$')),
+  password: Joi.string().required().pattern(new RegExp('^[a-zA-Z0-9]{6,30}$')),
 
   confirmPassword: Joi.ref('password'),
 }).with('password', 'confirmPassword')
 
 const validateRegister = (req, res, next) => {
-  const result = schema.validate(req.body, {
+  const result = registerSchema.validate(req.body, {
     abortEarly: false,
     convert: false,
   })

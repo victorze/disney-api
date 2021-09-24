@@ -11,7 +11,7 @@ describe('Error handler', () => {
       .get('/api/foo')
       .end((err, res) => {
         expect(res.status).toBe(404)
-        expect(res.body.error).toBe('Aquí no hay nada.')
+        expect(res.body.message).toBe('Aquí no hay nada.')
         done()
       })
   })

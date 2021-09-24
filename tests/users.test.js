@@ -5,6 +5,7 @@ const { app, server } = require('../src/server')
 const db = require('../src/models')
 
 const User = db.User
+const basePath = '/api/auth'
 
 process.env.JWT_SECRET = 'secret'
 
@@ -24,10 +25,10 @@ describe('users (auth)', () => {
     server.close()
   })
 
-  describe('POST /api/auth/register', () => {
+  describe(`POST ${basePath}/register`, () => {
     test('A valid user should be created', (done) => {
       request(app)
-        .post('/api/auth/register')
+        .post(`${basePath}/register`)
         .send(dummyUser)
         .end((err, res) => {
           expect(res.status).toBe(201)
@@ -50,12 +51,34 @@ describe('users (auth)', () => {
         })
     })
 
+    test('Creating a user with an email already registered should fail', (done) => {
+      const user = User.build(dummyUser)
+      user.setPassword(dummyUser.password)
+
+      user
+        .save()
+        .then(() => {
+          request(app)
+            .post(`${basePath}/register`)
+            .send(dummyUser)
+            .end((err, res) => {
+              expect(res.status).toBe(409)
+              expect(res.body.message).toBeDefined()
+              expect(res.text.includes('email')).toBeTruthy()
+              done()
+            })
+        })
+        .catch((err) => {
+          done(err)
+        })
+    })
+
     test('If the passwords do not match, the user should not be created', (done) => {
       request(app)
-        .post('/api/auth/register')
+        .post(`${basePath}/register`)
         .send({
           ...dummyUser,
-          confirmPassword: 'foo'
+          confirmPassword: 'foo',
         })
         .end((err, res) => {
           expect(res.status).toBe(400)
@@ -68,7 +91,7 @@ describe('users (auth)', () => {
 
     test('A user with an invalid email should not be created', (done) => {
       request(app)
-        .post('/api/auth/register')
+        .post(`${basePath}/register`)
         .send({
           ...dummyUser,
           email: '@email.com',
