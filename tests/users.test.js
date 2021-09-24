@@ -104,11 +104,41 @@ describe('users (auth)', () => {
           done()
         })
     })
+
+    test('The email must be stored in lowercase', (done) => {
+      request(app)
+        .post(`${basePath}/register`)
+        .send({
+          ...dummyUser,
+          email: dummyUser.email.toUpperCase()
+        })
+        .end((err, res) => {
+          expect(res.status).toBe(201)
+          expect(res.body.token).toBeDefined()
+
+          User.findAll({ where: { email: dummyUser.email } })
+            .then((users) => {
+              expect(users).toBeInstanceOf(Array)
+              expect(users).toHaveLength(1)
+
+              const [user] = users
+              expect(user.email).toBe(dummyUser.email)
+              done()
+            })
+            .catch((err) => {
+              done(err)
+            })
+        })
+    })
   })
+
+  // describe(`POST ${basePath}/login`, () => {
+  // })
 
   test('Check password', () => {
     const user = User.build(dummyUser)
     user.setPassword(dummyUser.password)
+
     expect(user.validPassword(dummyUser.password)).toBeTruthy()
     expect(user.validPassword('secret')).toBeFalsy()
   })
