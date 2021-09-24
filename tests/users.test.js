@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken")
+const jwt = require('jsonwebtoken')
 const request = require('supertest')
 
 const { app, server } = require('../src/server')
@@ -23,10 +23,10 @@ describe('users', () => {
     server.close()
   })
 
-  describe('POST /api/users/register', () => {
+  describe('POST /api/auth/register', () => {
     test('Register a user', (done) => {
       request(app)
-        .post('/api/users/register')
+        .post('/api/auth/register')
         .send(dummyUser)
         .end((err, res) => {
           expect(res.status).toBe(201)
@@ -43,7 +43,7 @@ describe('users', () => {
               expect(user.validPassword(dummyUser.password)).toBeTruthy()
               done()
             })
-            .catch(err => {
+            .catch((err) => {
               done(err)
             })
         })
