@@ -5,8 +5,8 @@ const characterController = require('../controllers/characterController')
 const {
   validateRegister,
   validateLogin,
-} = require('../controllers/validators/authValidator')
-const { emailToLowerCase } = require('../controllers/middleware')
+} = require('../middleware/validators/authValidator')
+const { emailToLowerCase } = require('../middleware')
 
 const route = express.Router()
 
