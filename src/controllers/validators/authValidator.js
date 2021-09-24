@@ -24,6 +24,27 @@ const validateRegister = (req, res, next) => {
   }
 }
 
+const loginSchema = Joi.object({
+  email: Joi.string().required().email(),
+
+  password: Joi.string().required(),
+})
+
+const validateLogin = (req, res, next) => {
+  const result = loginSchema.validate(req.body, {
+    abortEarly: false,
+    convert: false,
+  })
+
+  if (!result.error) {
+    next()
+  } else {
+    const errors = result.error.details.map((err) => ({ message: err.message }))
+    res.status(400).json(errors)
+  }
+}
+
 module.exports = {
   validateRegister,
+  validateLogin,
 }
