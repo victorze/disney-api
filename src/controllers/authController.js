@@ -1,5 +1,5 @@
 const db = require('../models')
-const { UserExistsError } = require('./errors/userError')
+const { UserExistsError, IncorrectCredentials } = require('./errors/userError')
 const { catchErrors } = require('../handlers/errors')
 
 const User = db.User
@@ -22,13 +22,17 @@ const login = async (req, res) => {
   const { email, password } = req.body
   const [user] = await User.findAll({ where: { email } })
 
+  if (!user) throw new IncorrectCredentials()
+
   if (user.validPassword(password)) {
     const token = user.generateJwt()
     res.json({ token })
+  } else {
+    throw new IncorrectCredentials()
   }
 }
 
 module.exports = {
   register: catchErrors(register),
-  login,
+  login: catchErrors(login),
 }
