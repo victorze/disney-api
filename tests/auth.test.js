@@ -42,7 +42,7 @@ describe('users (auth)', () => {
               const [user] = users
               expect(user.name).toBe(dummyUser.name)
               expect(user.email).toBe(dummyUser.email)
-              expect(user.validPassword(dummyUser.password)).toBeTruthy()
+              expect(user.verifyPassword(dummyUser.password)).toBeTruthy()
               done()
             })
             .catch((err) => {
@@ -258,8 +258,8 @@ describe('users (auth)', () => {
     const user = User.build(dummyUser)
     user.setPassword(dummyUser.password)
 
-    expect(user.validPassword(dummyUser.password)).toBeTruthy()
-    expect(user.validPassword('secret')).toBeFalsy()
+    expect(user.verifyPassword(dummyUser.password)).toBeTruthy()
+    expect(user.verifyPassword('secret')).toBeFalsy()
   })
 
   test('JWT', () => {

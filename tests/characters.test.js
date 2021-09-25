@@ -3,6 +3,9 @@ const { app, server } = require('../src/server')
 const db = require('../src/models')
 
 const Character = db.Character
+const User = db.User
+
+process.env.JWT_SECRET = 'secret'
 
 const dummyCharacters = [
   {
@@ -22,6 +25,26 @@ const dummyCharacters = [
 ]
 
 describe('characters', () => {
+  let authToken
+
+  beforeAll((done) => {
+    User.destroy({ truncate: true }).then(() => {
+      request(app)
+        .post('/api/auth/register')
+        .send({
+          email: 'foo@email.com',
+          password: 'foofoo',
+          confirmPassword: 'foofoo',
+        })
+        .end((err, res) => {
+          expect(res.status).toBe(201)
+          expect(res.body.token).toBeDefined()
+          authToken = res.body.token
+          done()
+        })
+    })
+  })
+
   beforeEach((done) => {
     Character.destroy({ truncate: true }).then(() => done())
   })
@@ -37,6 +60,7 @@ describe('characters', () => {
       request(app)
         .post('/api/characters')
         .send(character)
+        .set('Authorization', `Bearer ${authToken}`)
         .end((err, res) => {
           expect(res.status).toBe(201)
           expect(res.body.name).toBe(character.name)

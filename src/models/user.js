@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
         .toString('hex')
     }
 
-    validPassword(password) {
+    verifyPassword(password) {
       const hash = crypto
         .pbkdf2Sync(password, this.salt, 1000, 64, 'sha512')
         .toString('hex')

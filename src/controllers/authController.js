@@ -1,6 +1,6 @@
 const db = require('../models')
 const { UserExistsError, IncorrectCredentials } = require('./errors/userError')
-const { catchErrors } = require('../handlers/errors')
+const { catchErrors } = require('../handlers')
 
 const User = db.User
 
@@ -12,8 +12,8 @@ const register = async (req, res) => {
   } else {
     const user = User.build(req.body)
     user.setPassword(req.body.password)
-    const token = user.generateJwt()
     await user.save()
+    const token = user.generateJwt()
     res.status(201).json({ token })
   }
 }
@@ -22,9 +22,11 @@ const login = async (req, res) => {
   const { email, password } = req.body
   const [user] = await User.findAll({ where: { email } })
 
-  if (!user) throw new IncorrectCredentials()
+  if (!user) {
+    throw new IncorrectCredentials('El correo electrónico no está registrado.')
+  }
 
-  if (user.validPassword(password)) {
+  if (user.verifyPassword(password)) {
     const token = user.generateJwt()
     res.json({ token })
   } else {

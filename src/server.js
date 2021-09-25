@@ -3,7 +3,7 @@ const express = require('express')
 const logger = require('morgan')
 
 const routes = require('./routes')
-const errors = require('./handlers/errors')
+const { notFound, productionErrors } = require('./handlers')
 
 const app = express()
 
@@ -16,8 +16,8 @@ app.use(express.json())
 
 app.use('/api', routes)
 
-app.use(errors.notFound)
-app.use(errors.productionErrors)
+app.use(notFound)
+app.use(productionErrors)
 
 const PORT = process.env.PORT || 3000
 const server = app.listen(PORT, () => {

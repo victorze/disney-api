@@ -7,6 +7,7 @@ const {
   validateLogin,
 } = require('../middleware/validators/authValidator')
 const { emailToLowerCase } = require('../middleware')
+const { auth } = require('../handlers')
 
 const route = express.Router()
 
@@ -21,7 +22,7 @@ route.post(
   authController.login
 )
 
-route.post('/characters', characterController.store)
+route.post('/characters', auth, characterController.store)
 route.get('/characters', characterController.index)
 route.get('/characters/:id', characterController.show)
 
