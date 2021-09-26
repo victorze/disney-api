@@ -54,7 +54,7 @@ describe('characters', () => {
   })
 
   describe('POST /api/characters', () => {
-    test('Valid character created', (done) => {
+    test('Create a character with valid token', (done) => {
       const [character] = dummyCharacters
 
       request(app)
@@ -68,6 +68,33 @@ describe('characters', () => {
           expect(res.body.weight).toBe(character.weight)
           expect(res.body.story).toBe(character.story)
           expect(res.body.image).toBe(character.image)
+          done()
+        })
+    })
+
+    test('Trying to create a character without sending token returns 401', (done) => {
+      const [character] = dummyCharacters
+
+      request(app)
+        .post('/api/characters')
+        .send(character)
+        .end((err, res) => {
+          expect(res.status).toBe(401)
+          expect(res.body.message).toBeDefined()
+          done()
+        })
+    })
+
+    test('Trying to create a character with an invalid token returns 401', (done) => {
+      const [character] = dummyCharacters
+
+      request(app)
+        .post('/api/characters')
+        .send(character)
+        .set('Authorization', `Bearer [Invalid Token]`)
+        .end((err, res) => {
+          expect(res.status).toBe(401)
+          expect(res.body.message).toBeDefined()
           done()
         })
     })
