@@ -7,7 +7,7 @@ const {
   validateLogin,
 } = require('../middleware/validators/authValidator')
 const { emailToLowerCase } = require('../middleware')
-const { auth } = require('../handlers')
+const { auth } = require('../middleware/authentication')
 
 const route = express.Router()
 

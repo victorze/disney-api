@@ -3,7 +3,7 @@ const express = require('express')
 const logger = require('morgan')
 
 const routes = require('./routes')
-const { notFound, productionErrors } = require('./handlers')
+const { notFound, productionErrors } = require('./middleware/errors')
 
 const app = express()
 

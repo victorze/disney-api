@@ -1,6 +1,6 @@
 const db = require('../models')
-const { UserExistsError, IncorrectCredentials } = require('./errors/userError')
-const { catchErrors } = require('../handlers')
+const { UserExistsError, IncorrectCredentials } = require('./errors/authError')
+const { catchErrors } = require('../middleware/errors')
 
 const User = db.User
 

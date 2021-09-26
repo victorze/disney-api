@@ -16,7 +16,17 @@ class IncorrectCredentials extends Error {
   }
 }
 
+class JWTAuthenticationError extends Error {
+  constructor(message) {
+    super(message)
+    this.message = message || 'JWT authentication error.'
+    this.status = 401
+    this.name = 'JWTAuthenticationError'
+  }
+}
+
 module.exports = {
   UserExistsError,
   IncorrectCredentials,
+  JWTAuthenticationError,
 }
