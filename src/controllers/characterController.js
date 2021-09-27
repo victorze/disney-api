@@ -1,3 +1,4 @@
+const { catchErrors } = require('../middleware/errors')
 const db = require('../models')
 
 const Character = db.Character
@@ -23,6 +24,6 @@ const show = async (req, res) => {
 
 module.exports = {
   index,
-  store,
+  store: catchErrors(store),
   show,
 }

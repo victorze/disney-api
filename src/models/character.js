@@ -5,11 +5,25 @@ module.exports = (sequelize) => {
 
   Character.init(
     {
-      name: DataTypes.STRING,
-      age: DataTypes.INTEGER,
-      weight: DataTypes.FLOAT,
-      story: DataTypes.TEXT,
-      image: DataTypes.TEXT,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      age: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      weight: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      story: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      image: {
+        type: DataTypes.TEXT,
+      },
     },
     {
       sequelize,

@@ -6,6 +6,7 @@ const {
   validateRegister,
   validateLogin,
 } = require('../middleware/validators/authValidator')
+const { validateCharacter } = require('../middleware/validators/characterValidators')
 const { emailToLowerCase } = require('../middleware')
 const { auth } = require('../middleware/authentication')
 
@@ -22,8 +23,8 @@ route.post(
   authController.login
 )
 
-route.post('/characters', auth, characterController.store)
-route.get('/characters', characterController.index)
-route.get('/characters/:id', characterController.show)
+route.post('/characters', [auth, validateCharacter], characterController.store)
+route.get('/characters', auth, characterController.index)
+route.get('/characters/:id', auth, characterController.show)
 
 module.exports = route

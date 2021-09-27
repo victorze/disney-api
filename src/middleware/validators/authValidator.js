@@ -2,11 +2,8 @@ const Joi = require('joi')
 
 const registerSchema = Joi.object({
   email: Joi.string().required().email(),
-
   name: Joi.string().alphanum().min(3).max(30),
-
   password: Joi.string().required().pattern(new RegExp('^[a-zA-Z0-9]{6,30}$')),
-
   confirmPassword: Joi.ref('password'),
 }).with('password', 'confirmPassword')
 
