@@ -54,19 +54,32 @@ describe('characters', () => {
 
   describe(`POST ${basePath}`, () => {
     test('Create a character with valid token', (done) => {
-      const [character] = dummyCharacters
+      const [dummyCharacter] = dummyCharacters
 
       request(app)
         .post(basePath)
-        .send(character)
+        .send(dummyCharacter)
         .set('Authorization', `Bearer ${authToken}`)
         .end((err, res) => {
           expect(res.status).toBe(201)
-          expect(res.body.name).toBe(character.name)
-          expect(res.body.age).toBe(character.age)
-          expect(res.body.weight).toBe(character.weight)
-          expect(res.body.story).toBe(character.story)
-          done()
+          expect(res.body.name).toBe(dummyCharacter.name)
+          expect(res.body.age).toBe(dummyCharacter.age)
+          expect(res.body.weight).toBe(dummyCharacter.weight)
+          expect(res.body.story).toBe(dummyCharacter.story)
+
+          Character.findByPk(res.body.id)
+            .then((character) => {
+              expect(character).toBeInstanceOf(Character)
+
+              expect(character.name).toBe(dummyCharacter.name)
+              expect(character.age).toBe(dummyCharacter.age)
+              expect(character.weight).toBe(dummyCharacter.weight)
+              expect(character.story).toBe(dummyCharacter.story)
+              done()
+            })
+            .catch((err) => {
+              done(err)
+            })
         })
     })
 
@@ -86,18 +99,18 @@ describe('characters', () => {
     })
   })
 
-    test('Trying to create a character without sending token returns 401', (done) => {
-      const [character] = dummyCharacters
+  test('Trying to create a character without sending token returns 401', (done) => {
+    const [character] = dummyCharacters
 
-      request(app)
-        .post(basePath)
-        .send(character)
-        .end((err, res) => {
-          expect(res.status).toBe(401)
-          expect(res.body.message).toBeDefined()
-          done()
-        })
-    })
+    request(app)
+      .post(basePath)
+      .send(character)
+      .end((err, res) => {
+        expect(res.status).toBe(401)
+        expect(res.body.message).toBeDefined()
+        done()
+      })
+  })
 
   describe('GET /api/characters', () => {
     test('There are characters, return an array', (done) => {

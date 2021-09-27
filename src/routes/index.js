@@ -6,7 +6,9 @@ const {
   validateRegister,
   validateLogin,
 } = require('../middleware/validators/authValidator')
-const { validateCharacter } = require('../middleware/validators/characterValidators')
+const {
+  validateCharacter,
+} = require('../middleware/validators/characterValidators')
 const { emailToLowerCase } = require('../middleware')
 const { auth } = require('../middleware/authentication')
 
