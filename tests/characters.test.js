@@ -14,12 +14,14 @@ const dummyCharacters = [
     age: 33,
     weight: 88.5,
     story: 'Jane story',
+    image: 'jane.png'
   },
   {
     name: 'Joe',
     age: 40,
     weight: 70.8,
     story: 'Joe story',
+    image: 'joe.png'
   },
 ]
 
@@ -53,7 +55,7 @@ describe('characters', () => {
   })
 
   describe(`POST ${basePath}`, () => {
-    test('Create a character with valid token', (done) => {
+    test('If the token is valid and the data is valid, the character is created', (done) => {
       const [dummyCharacter] = dummyCharacters
 
       request(app)
