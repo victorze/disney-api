@@ -7,7 +7,7 @@ const User = db.User
 
 const auth = async (req, res, next) => {
   if (req.header('authorization')) {
-    const token = req.header('authorization').substring(7)
+    const token = req.header('authorization').split(/\s+/)[1]
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET)
