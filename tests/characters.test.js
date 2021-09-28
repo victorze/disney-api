@@ -14,14 +14,14 @@ const dummyCharacters = [
     age: 33,
     weight: 88.5,
     story: 'Jane story',
-    image: 'jane.png'
+    image: '/images/jane.png',
   },
   {
     name: 'Joe',
     age: 40,
     weight: 70.8,
     story: 'Joe story',
-    image: 'joe.png'
+    image: '/images/joe.png',
   },
 ]
 
@@ -73,6 +73,7 @@ describe('characters', () => {
           expect(res.body.weight).toBe(dummyCharacter.weight)
           expect(res.body.story).toBe(dummyCharacter.story)
           expect(res.body.image.includes('mickey.png')).toBeTruthy()
+          expect(res.body.image.includes('http')).toBeTruthy()
 
           Character.findByPk(res.body.id)
             .then((character) => {
@@ -165,7 +166,8 @@ describe('characters', () => {
               expect(res.body.age).toBe(data.age)
               expect(res.body.weight).toBe(data.weight)
               expect(res.body.story).toBe(data.story)
-              expect(res.body.image).toBe(data.image)
+              expect(res.body.image.includes(data.image)).toBeTruthy()
+              expect(res.body.image.includes('http')).toBeTruthy()
               done()
             })
         })
