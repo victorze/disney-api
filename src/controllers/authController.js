@@ -23,7 +23,7 @@ const login = async (req, res) => {
   const [user] = await User.findAll({ where: { email } })
 
   if (!user) {
-    throw new IncorrectCredentials('El correo electrónico no está registrado.')
+    throw new IncorrectCredentials('El correo electrónico no está registrado')
   }
 
   if (user.verifyPassword(password)) {
