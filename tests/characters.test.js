@@ -54,6 +54,7 @@ describe('characters', () => {
     server.close()
   })
 
+  // Create new character
   describe(`POST ${basePath}`, () => {
     test('If the token is valid and the data is valid, the character is created', (done) => {
       const [dummyCharacter] = dummyCharacters
@@ -121,6 +122,7 @@ describe('characters', () => {
       })
   })
 
+  // Read list of characters
   describe('GET /api/characters', () => {
     test('There are characters, return an array', (done) => {
       Character.bulkCreate(dummyCharacters)
@@ -157,11 +159,12 @@ describe('characters', () => {
     })
   })
 
+  // Read a specific character
   describe('GET /api/characters/:id', () => {
-    const [character] = dummyCharacters
-
     test('Character exist, return character', (done) => {
-      Character.create(character)
+      const [dummyCharacter] = dummyCharacters
+
+      Character.create(dummyCharacter)
         .then((data) => {
           request(app)
             .get(`${basePath}/${data.id}`)
@@ -189,6 +192,26 @@ describe('characters', () => {
           expect(res.text.includes('not found')).toBeTruthy()
           done()
         })
+    })
+  })
+
+  // Delete a specific character
+  describe('DELETE /api/characters/:id', () => {
+    test('If the character exists, delete it', (done) => {
+      const [dummyCharacter] = dummyCharacters
+
+      Character.create(dummyCharacter)
+        .then((character) => {
+          request(app)
+            .delete(`${basePath}/${character.id}`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .end((err, res) => {
+              expect(res.status).toBe(204)
+              expect(res.body).toEqual({})
+              done()
+            })
+        })
+        .catch((err) => done(err))
     })
   })
 })

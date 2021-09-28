@@ -25,8 +25,17 @@ const show = async (req, res) => {
   }
 }
 
+const destroy = async (req, res) => {
+  const deletedRows = await Character.destroy({ where: { id: req.params.id } })
+
+  if (deletedRows === 1) {
+    res.status(204).json(null)
+  }
+}
+
 module.exports = {
   index,
   store: catchErrors(store),
   show,
+  destroy,
 }
