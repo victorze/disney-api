@@ -58,14 +58,19 @@ describe('characters', () => {
 
       request(app)
         .post(basePath)
-        .send(dummyCharacter)
         .set('Authorization', `Bearer ${authToken}`)
+        .field('name', dummyCharacter.name)
+        .field('age', dummyCharacter.age)
+        .field('weight', dummyCharacter.weight)
+        .field('story', dummyCharacter.story)
+        .attach('image', __dirname + '/resources/mickey.png')
         .end((err, res) => {
           expect(res.status).toBe(201)
           expect(res.body.name).toBe(dummyCharacter.name)
           expect(res.body.age).toBe(dummyCharacter.age)
           expect(res.body.weight).toBe(dummyCharacter.weight)
           expect(res.body.story).toBe(dummyCharacter.story)
+          expect(res.body.image.includes('mickey.png')).toBeTruthy()
 
           Character.findByPk(res.body.id)
             .then((character) => {
@@ -75,6 +80,7 @@ describe('characters', () => {
               expect(character.age).toBe(dummyCharacter.age)
               expect(character.weight).toBe(dummyCharacter.weight)
               expect(character.story).toBe(dummyCharacter.story)
+              expect(character.image.includes('mickey.png')).toBeTruthy()
               done()
             })
             .catch((err) => {

@@ -5,12 +5,12 @@ const characterSchema = Joi.object({
   age: Joi.number().required(),
   weight: Joi.number().required(),
   story: Joi.string().required(),
+  image: Joi.string().required(),
 })
 
 const validateCharacter = (req, res, next) => {
   const result = characterSchema.validate(req.body, {
     abortEarly: false,
-    convert: false,
   })
 
   if (!result.error) {
