@@ -132,6 +132,12 @@ describe('characters', () => {
               expect(res.status).toBe(200)
               expect(res.body).toBeInstanceOf(Array)
               expect(res.body).toHaveLength(2)
+
+              const [character] = res.body
+              expect(Object.keys(character)).toHaveLength(3)
+              expect(character.id).toBeDefined()
+              expect(character.name).toBeDefined()
+              expect(character.image).toBeDefined()
               done()
             })
         })

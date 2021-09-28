@@ -24,6 +24,9 @@ module.exports = (sequelize) => {
       image: {
         type: DataTypes.TEXT,
         allowNull: false,
+        get() {
+          return process.env.SCHEME_AND_HOST + this.getDataValue('image')
+        },
       },
     },
     {

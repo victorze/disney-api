@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use((req, res, next) => {
-  req.schemeAndHost = `${req.protocol}://${req.get('host')}`
+  process.env.SCHEME_AND_HOST = `${req.protocol}://${req.get('host')}`
   next()
 })
 
