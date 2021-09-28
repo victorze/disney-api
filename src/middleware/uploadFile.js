@@ -13,10 +13,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-const imageUpload = (fieldName) => {
+const uploadImage = (fieldName) => {
   return upload.single(fieldName)
 }
 
 module.exports = {
-  upload,
+  uploadImage,
 }

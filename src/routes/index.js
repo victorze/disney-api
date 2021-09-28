@@ -11,7 +11,7 @@ const {
 } = require('../middleware/validators/characterValidator')
 const { emailToLowerCase } = require('../middleware')
 const { auth } = require('../middleware/authentication')
-const { upload } = require('../middleware/uploadFile')
+const { uploadImage } = require('../middleware/uploadFile')
 
 const route = express.Router()
 
@@ -28,7 +28,7 @@ route.post(
 
 route.post(
   '/characters',
-  [auth, upload.single('image'), validateCharacter],
+  [auth, uploadImage('image'), validateCharacter],
   characterController.store
 )
 route.get('/characters', auth, characterController.index)
