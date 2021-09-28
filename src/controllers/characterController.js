@@ -1,5 +1,6 @@
-const { catchErrors } = require('../middleware/errors')
 const db = require('../models')
+const { catchErrors } = require('../middleware/errors')
+const { NotFoundError} = require('./errors/httpError')
 
 const Character = db.Character
 
@@ -17,12 +18,8 @@ const store = async (req, res) => {
 
 const show = async (req, res) => {
   const character = await Character.findByPk(req.params.id)
-
-  if (character) {
-    res.json(character)
-  } else {
-    res.status(404).json({ message: 'Character not found' })
-  }
+  if (!character) throw new NotFoundError()
+  res.json(character)
 }
 
 const update = async (req, res) => {
@@ -30,22 +27,14 @@ const update = async (req, res) => {
     where: { id: req.params.id },
     returning: true,
   })
-
-  if (updatedRows === 1) {
-    res.json(updatedCharacter)
-  } else {
-    res.status(404).json({ message: 'Character not found' })
-  }
+  if (updatedRows === 0) throw new NotFoundError()
+  res.json(updatedCharacter)
 }
 
 const destroy = async (req, res) => {
   const deletedRows = await Character.destroy({ where: { id: req.params.id } })
-
-  if (deletedRows === 1) {
-    res.status(204).json(null)
-  } else {
-    res.status(404).json({ message: 'Character not found' })
-  }
+  if (deletedRows === 0) throw new NotFoundError()
+  res.status(204).json(null)
 }
 
 module.exports = {
