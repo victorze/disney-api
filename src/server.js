@@ -1,18 +1,14 @@
-const path = require('path')
-
 require('dotenv').config()
+const path = require('path')
 const express = require('express')
 const logger = require('morgan')
 
-const routes = require('./routes')
 const { notFound, productionErrors } = require('./middleware/errors')
-
-const app = express()
-
 const db = require('./models')
 
 db.sequelize.sync({ alter: true })
 
+const app = express()
 app.use(logger('dev', { skip: () => process.env.NODE_ENV === 'test' }))
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
@@ -22,7 +18,7 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use('/api', routes)
+app.use(require('./routes'))
 
 app.use(notFound)
 app.use(productionErrors)
