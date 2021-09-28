@@ -15,6 +15,7 @@ route.post(
 )
 route.get('/', characterController.index)
 route.get('/:id', characterController.show)
+route.put('/:id', uploadImage('image'), characterController.update)
 route.delete('/:id', characterController.destroy)
 
 module.exports = route

@@ -21,7 +21,20 @@ const show = async (req, res) => {
   if (character) {
     res.json(character)
   } else {
-    res.status(404).json({ message: 'character not found' })
+    res.status(404).json({ message: 'Character not found' })
+  }
+}
+
+const update = async (req, res) => {
+  const [updatedRows, [updatedCharacter]] = await Character.update(req.body, {
+    where: { id: req.params.id },
+    returning: true,
+  })
+
+  if (updatedRows === 1) {
+    res.json(updatedCharacter)
+  } else {
+    res.status(404).json({ message: 'Character not found' })
   }
 }
 
@@ -30,12 +43,15 @@ const destroy = async (req, res) => {
 
   if (deletedRows === 1) {
     res.status(204).json(null)
+  } else {
+    res.status(404).json({ message: 'Character not found' })
   }
 }
 
 module.exports = {
-  index,
+  index: catchErrors(index),
   store: catchErrors(store),
-  show,
-  destroy,
+  show: catchErrors(show),
+  update: catchErrors(update),
+  destroy: catchErrors(destroy),
 }

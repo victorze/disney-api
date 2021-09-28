@@ -165,17 +165,17 @@ describe('characters', () => {
       const [dummyCharacter] = dummyCharacters
 
       Character.create(dummyCharacter)
-        .then((data) => {
+        .then((character) => {
           request(app)
-            .get(`${basePath}/${data.id}`)
+            .get(`${basePath}/${character.id}`)
             .set('Authorization', `Bearer ${authToken}`)
             .end((err, res) => {
               expect(res.status).toBe(200)
-              expect(res.body.name).toBe(data.name)
-              expect(res.body.age).toBe(data.age)
-              expect(res.body.weight).toBe(data.weight)
-              expect(res.body.story).toBe(data.story)
-              expect(res.body.image.includes(data.image)).toBeTruthy()
+              expect(res.body.name).toBe(character.name)
+              expect(res.body.age).toBe(character.age)
+              expect(res.body.weight).toBe(character.weight)
+              expect(res.body.story).toBe(character.story)
+              expect(res.body.image.includes(character.image)).toBeTruthy()
               expect(res.body.image.includes('http')).toBeTruthy()
               done()
             })
@@ -189,7 +189,44 @@ describe('characters', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .end((err, res) => {
           expect(res.status).toBe(404)
-          expect(res.text.includes('not found')).toBeTruthy()
+          expect(res.body.message.includes('not found')).toBeTruthy()
+          done()
+        })
+    })
+  })
+
+  // Update a specific character
+  describe('GET /api/characters/:id', () => {
+    test('Character exist, update character', (done) => {
+      const [dummyCharacter] = dummyCharacters
+
+      Character.create(dummyCharacter)
+        .then((character) => {
+          request(app)
+            .put(`${basePath}/${character.id}`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .field('name', 'Goofy')
+            .attach('image', __dirname + '/resources/goofy.png')
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body.name).toBe('Goofy')
+              expect(res.body.image.includes('goofy.png')).toBeTruthy()
+              expect(res.body.image.includes('http')).toBeTruthy()
+              done()
+            })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('Character does not exist, return status 404', (done) => {
+      request(app)
+        .put(`${basePath}/123`)
+        .set('Authorization', `Bearer ${authToken}`)
+        .field('name', 'Goofy')
+        .attach('image', __dirname + '/resources/goofy.png')
+        .end((err, res) => {
+          expect(res.status).toBe(404)
+          expect(res.body.message.includes('not found')).toBeTruthy()
           done()
         })
     })
@@ -212,6 +249,17 @@ describe('characters', () => {
             })
         })
         .catch((err) => done(err))
+    })
+
+    test('If the character does not exist, return status 404', (done) => {
+      request(app)
+        .delete(`${basePath}/123`)
+        .set('Authorization', `Bearer ${authToken}`)
+        .end((err, res) => {
+          expect(res.status).toBe(404)
+          expect(res.body.message.includes('not found')).toBeTruthy()
+          done()
+        })
     })
   })
 })
