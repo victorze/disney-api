@@ -1,25 +1,22 @@
 const { DataTypes, Model } = require('sequelize')
 
 module.exports = (sequelize) => {
-  class Character extends Model {}
+  class Movie extends Model {}
 
-  Character.init(
+  Movie.init(
     {
-      name: {
+      title: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      age: {
+      releaseDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      rating: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      },
-      weight: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
-      story: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+        validate: { min: 1, max: 5 },
       },
       image: {
         type: DataTypes.TEXT,
@@ -34,5 +31,5 @@ module.exports = (sequelize) => {
     }
   )
 
-  return Character
+  return Movie
 }

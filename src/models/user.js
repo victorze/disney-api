@@ -49,7 +49,6 @@ module.exports = (sequelize) => {
     },
     {
       sequelize,
-      tableName: 'users',
     }
   )
 

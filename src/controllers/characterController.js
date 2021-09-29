@@ -38,8 +38,8 @@ const destroy = async (req, res) => {
 }
 
 module.exports = {
-  index: catchErrors(index),
   store: catchErrors(store),
+  index: catchErrors(index),
   show: catchErrors(show),
   update: catchErrors(update),
   destroy: catchErrors(destroy),

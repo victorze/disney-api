@@ -1,7 +1,7 @@
 const Joi = require('joi')
 
 const characterSchema = Joi.object({
-  name: Joi.string().required().alphanum().min(3).max(30),
+  name: Joi.string().required().min(3),
   age: Joi.number().required(),
   weight: Joi.number().required(),
   story: Joi.string().required(),

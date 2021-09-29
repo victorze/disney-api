@@ -93,7 +93,7 @@ describe('characters', () => {
         })
     })
 
-    test('A character with invalid data will not be created', (done) => {
+    test('A character with incomplete data will not be created', (done) => {
       request(app)
         .post(basePath)
         .send({
@@ -107,19 +107,19 @@ describe('characters', () => {
           done()
         })
     })
-  })
 
-  test('Trying to create a character without sending token returns 401', (done) => {
-    const [character] = dummyCharacters
+    test('Trying to create a character without sending token returns 401', (done) => {
+      const [dummyCharacter] = dummyCharacters
 
-    request(app)
-      .post(basePath)
-      .send(character)
-      .end((err, res) => {
-        expect(res.status).toBe(401)
-        expect(res.body.message).toBeDefined()
-        done()
-      })
+      request(app)
+        .post(basePath)
+        .send(dummyCharacter)
+        .end((err, res) => {
+          expect(res.status).toBe(401)
+          expect(res.body.message).toBeDefined()
+          done()
+        })
+    })
   })
 
   // Read list of characters
