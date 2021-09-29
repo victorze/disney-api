@@ -6,9 +6,9 @@ describe('Error handler', () => {
     server.close()
   })
 
-  test('Not found', (done) => {
+  test('If the resource does not exist return 404', (done) => {
     request(app)
-      .get('/api/foo')
+      .get('/foo/bar')
       .end((err, res) => {
         expect(res.status).toBe(404)
         expect(res.body.message).toBe('There is nothing here')
