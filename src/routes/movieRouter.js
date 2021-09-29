@@ -7,5 +7,6 @@ const { validateMovie } = require('../middleware/validators/movieValidator')
 route.use(auth)
 
 route.post('/', [uploadImage('image'), validateMovie], movieController.store)
+route.get('/', movieController.index)
 
 module.exports = route

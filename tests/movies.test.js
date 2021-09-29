@@ -104,4 +104,42 @@ describe('movies', () => {
         })
     })
   })
+
+  // Read list of movies
+  describe('GET /movies', () => {
+    test('There are movies, return an array', (done) => {
+      Movie.bulkCreate(dummyMovies)
+        .then(() => {
+          request(app)
+            .get(basePath)
+            .set('Authorization', `Bearer ${authToken}`)
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body).toBeInstanceOf(Array)
+              expect(res.body).toHaveLength(2)
+
+              const [movie] = res.body
+              expect(Object.keys(movie)).toHaveLength(4)
+              expect(movie.id).toBeDefined()
+              expect(movie.title).toBeDefined()
+              expect(movie.releaseDate).toBeDefined()
+              expect(movie.image).toBeDefined()
+              done()
+            })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('There are no movies, return empty array', (done) => {
+      request(app)
+        .get(basePath)
+        .set('Authorization', `Bearer ${authToken}`)
+        .end((err, res) => {
+          expect(res.status).toBe(200)
+          expect(res.body).toBeInstanceOf(Array)
+          expect(res.body).toHaveLength(0)
+          done()
+        })
+    })
+  })
 })

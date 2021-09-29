@@ -8,6 +8,14 @@ const store = async (req, res) => {
   res.status(201).json(movie)
 }
 
+const index = async (req, res) => {
+  let movies = await Movie.findAll({
+    attributes: ['id', 'title', 'releaseDate', 'image'],
+  })
+  res.json(movies)
+}
+
 module.exports = {
   store: catchErrors(store),
+  index: catchErrors(index),
 }
