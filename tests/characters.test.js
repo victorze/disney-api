@@ -247,7 +247,13 @@ describe('characters', () => {
             .end((err, res) => {
               expect(res.status).toBe(204)
               expect(res.body).toEqual({})
-              done()
+
+              Character.findByPk(character.id)
+                .then((character) => {
+                  expect(character).toBeNull()
+                  done()
+                })
+                .catch((err) => done(err))
             })
         })
         .catch((err) => done(err))
