@@ -66,7 +66,7 @@ describe('characters', () => {
         .field('age', dummyCharacter.age)
         .field('weight', dummyCharacter.weight)
         .field('story', dummyCharacter.story)
-        .attach('image', __dirname + '/resources/mickey.png')
+        .attach('image', __dirname + '/resources/characters/mickey.png')
         .end((err, res) => {
           expect(res.status).toBe(201)
           expect(res.body.name).toBe(dummyCharacter.name)
@@ -206,7 +206,7 @@ describe('characters', () => {
             .put(`${basePath}/${character.id}`)
             .set('Authorization', `Bearer ${authToken}`)
             .field('name', 'Goofy')
-            .attach('image', __dirname + '/resources/goofy.png')
+            .attach('image', __dirname + '/resources/characters/goofy.png')
             .end((err, res) => {
               expect(res.status).toBe(200)
               expect(res.body.name).toBe('Goofy')
@@ -223,7 +223,7 @@ describe('characters', () => {
         .put(`${basePath}/123`)
         .set('Authorization', `Bearer ${authToken}`)
         .field('name', 'Goofy')
-        .attach('image', __dirname + '/resources/goofy.png')
+        .attach('image', __dirname + '/resources/characters/goofy.png')
         .end((err, res) => {
           expect(res.status).toBe(404)
           expect(res.body.message.includes('not found')).toBeTruthy()
