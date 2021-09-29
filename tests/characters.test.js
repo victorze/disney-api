@@ -4,7 +4,7 @@ const db = require('../src/models')
 
 const Character = db.Character
 const User = db.User
-const basePath = '/api/characters'
+const basePath = '/characters'
 
 process.env.JWT_SECRET = 'secret'
 
@@ -31,7 +31,7 @@ describe('characters', () => {
   beforeAll((done) => {
     User.destroy({ truncate: true }).then(() => {
       request(app)
-        .post('/api/auth/register')
+        .post('/auth/register')
         .send({
           email: 'foo@email.com',
           password: 'foofoo',
@@ -123,7 +123,7 @@ describe('characters', () => {
   })
 
   // Read list of characters
-  describe('GET /api/characters', () => {
+  describe('GET /characters', () => {
     test('There are characters, return an array', (done) => {
       Character.bulkCreate(dummyCharacters)
         .then(() => {
@@ -160,7 +160,7 @@ describe('characters', () => {
   })
 
   // Read a specific character
-  describe('GET /api/characters/:id', () => {
+  describe('GET /characters/:id', () => {
     test('Character exist, return character', (done) => {
       const [dummyCharacter] = dummyCharacters
 
@@ -196,7 +196,7 @@ describe('characters', () => {
   })
 
   // Update a specific character
-  describe('GET /api/characters/:id', () => {
+  describe('GET /characters/:id', () => {
     test('Character exist, update character', (done) => {
       const [dummyCharacter] = dummyCharacters
 
@@ -233,7 +233,7 @@ describe('characters', () => {
   })
 
   // Delete a specific character
-  describe('DELETE /api/characters/:id', () => {
+  describe('DELETE /characters/:id', () => {
     test('If the character exists, delete it', (done) => {
       const [dummyCharacter] = dummyCharacters
 

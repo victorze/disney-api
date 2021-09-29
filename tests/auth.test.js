@@ -5,7 +5,7 @@ const { app, server } = require('../src/server')
 const db = require('../src/models')
 
 const User = db.User
-const basePath = '/api/auth'
+const basePath = '/auth'
 
 process.env.JWT_SECRET = 'secret'
 
