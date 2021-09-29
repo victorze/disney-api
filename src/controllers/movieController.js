@@ -31,9 +31,16 @@ const update = async (req, res) => {
   res.json(updatedMovie)
 }
 
+const destroy = async (req, res) => {
+  const deletedRows = await Movie.destroy({ where: { id: req.params.id } })
+  if (deletedRows === 0) throw new NotFoundError()
+  res.status(204).json(null)
+}
+
 module.exports = {
   store: catchErrors(store),
   index: catchErrors(index),
   show: catchErrors(show),
   update: catchErrors(update),
+  destroy: catchErrors(destroy),
 }

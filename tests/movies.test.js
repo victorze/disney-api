@@ -215,4 +215,41 @@ describe('movies', () => {
         })
     })
   })
+
+  // Delete a specific movie
+  describe('DELETE /movies/:id', () => {
+    test('If the movie exists, delete it', (done) => {
+      const [dummyMovie] = dummyMovies
+
+      Movie.create(dummyMovie)
+        .then((movie) => {
+          request(app)
+            .delete(`${basePath}/${movie.id}`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .end((err, res) => {
+              expect(res.status).toBe(204)
+              expect(res.body).toEqual({})
+
+              Movie.findByPk(movie.id)
+                .then((movie) => {
+                  expect(movie).toBeNull()
+                  done()
+                })
+                .catch((err) => done(err))
+            })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('If the movie does not exist, return status 404', (done) => {
+      request(app)
+        .delete(`${basePath}/123`)
+        .set('Authorization', `Bearer ${authToken}`)
+        .end((err, res) => {
+          expect(res.status).toBe(404)
+          expect(res.body.message.includes('not found')).toBeTruthy()
+          done()
+        })
+    })
+  })
 })

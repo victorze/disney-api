@@ -10,5 +10,6 @@ route.post('/', [uploadImage('image'), validateMovie], movieController.store)
 route.get('/', movieController.index)
 route.get('/:id', movieController.show)
 route.put('/:id', uploadImage('image'), movieController.update)
+route.delete('/:id', movieController.destroy)
 
 module.exports = route
