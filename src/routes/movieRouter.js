@@ -8,5 +8,6 @@ route.use(auth)
 
 route.post('/', [uploadImage('image'), validateMovie], movieController.store)
 route.get('/', movieController.index)
+route.get('/:id', movieController.show)
 
 module.exports = route

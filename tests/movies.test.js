@@ -142,4 +142,39 @@ describe('movies', () => {
         })
     })
   })
+
+  // Read a specific movie
+  describe('GET /movies/:id', () => {
+    test('Movie exist, return movie', (done) => {
+      const [dummyMovie] = dummyMovies
+
+      Movie.create(dummyMovie)
+        .then((movie) => {
+          request(app)
+            .get(`${basePath}/${movie.id}`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body.title).toBe(movie.title)
+              expect(res.body.releaseDate).toBe(movie.releaseDate.toISOString())
+              expect(res.body.rating).toBe(movie.rating)
+              expect(res.body.image.includes(movie.image)).toBeTruthy()
+              expect(res.body.image.includes('http')).toBeTruthy()
+              done()
+            })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('Movie does not exist, return status 404', (done) => {
+      request(app)
+        .get(`${basePath}/123`)
+        .set('Authorization', `Bearer ${authToken}`)
+        .end((err, res) => {
+          expect(res.status).toBe(404)
+          expect(res.body.message.includes('not found')).toBeTruthy()
+          done()
+        })
+    })
+  })
 })
