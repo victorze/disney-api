@@ -210,6 +210,9 @@ describe('characters', () => {
             .end((err, res) => {
               expect(res.status).toBe(200)
               expect(res.body.name).toBe('Goofy')
+              expect(res.body.age).toBe(dummyCharacter.age)
+              expect(res.body.weight).toBe(dummyCharacter.weight)
+              expect(res.body.story).toBe(dummyCharacter.story)
               expect(res.body.image.includes('goofy.png')).toBeTruthy()
               expect(res.body.image.includes('http')).toBeTruthy()
               done()
@@ -223,7 +226,6 @@ describe('characters', () => {
         .put(`${basePath}/123`)
         .set('Authorization', `Bearer ${authToken}`)
         .field('name', 'Goofy')
-        .attach('image', __dirname + '/resources/characters/goofy.png')
         .end((err, res) => {
           expect(res.status).toBe(404)
           expect(res.body.message.includes('not found')).toBeTruthy()

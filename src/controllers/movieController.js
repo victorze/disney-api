@@ -22,8 +22,18 @@ const show = async (req, res) => {
   res.json(movie)
 }
 
+const update = async (req, res) => {
+  const [updatedRows, [updatedMovie]] = await Movie.update(req.body, {
+    where: { id: req.params.id },
+    returning: true,
+  })
+  if (updatedRows === 0) throw new NotFoundError()
+  res.json(updatedMovie)
+}
+
 module.exports = {
   store: catchErrors(store),
   index: catchErrors(index),
   show: catchErrors(show),
+  update: catchErrors(update),
 }

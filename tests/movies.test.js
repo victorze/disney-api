@@ -177,4 +177,42 @@ describe('movies', () => {
         })
     })
   })
+
+  // Update a specific movie
+  describe('GET /movies/:id', () => {
+    test('Movie exist, update movie', (done) => {
+      const [dummyMovie] = dummyMovies
+
+      Movie.create(dummyMovie)
+        .then((movie) => {
+          request(app)
+            .put(`${basePath}/${movie.id}`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .field('title', 'King')
+            .attach('image', __dirname + '/resources/movies/the-lion-king.jpg')
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body.title).toBe('King')
+              expect(res.body.releaseDate).toBe(movie.releaseDate.toISOString())
+              expect(res.body.rating).toBe(movie.rating)
+              expect(res.body.image.includes('the-lion-king.jpg')).toBeTruthy()
+              expect(res.body.image.includes('http')).toBeTruthy()
+              done()
+            })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('Movie does not exist, return status 404', (done) => {
+      request(app)
+        .put(`${basePath}/123`)
+        .set('Authorization', `Bearer ${authToken}`)
+        .field('title', 'King')
+        .end((err, res) => {
+          expect(res.status).toBe(404)
+          expect(res.body.message.includes('not found')).toBeTruthy()
+          done()
+        })
+    })
+  })
 })
