@@ -10,9 +10,24 @@ const store = async (req, res) => {
 }
 
 const index = async (req, res) => {
-  let characters = await Character.findAll({
+  let include
+  if (req.query.movies) {
+    include = [
+      {
+        model: db.Movie,
+        as: 'movies',
+        through: { where: { MovieId: req.query.movies } },
+        required: true,
+      },
+    ]
+  }
+
+  const options = {
     attributes: ['id', 'name', 'image'],
-  })
+  }
+  include ? (options.include = include) : (options.where = req.query)
+
+  const characters = await Character.findAll(options)
   res.json(characters)
 }
 
