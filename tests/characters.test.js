@@ -154,6 +154,109 @@ describe('characters', () => {
         .catch((err) => done(err))
     })
 
+    test('Filter characters by name', (done) => {
+      Character.bulkCreate(dummyCharacters)
+        .then(() => {
+          const [dummyCharacter] = dummyCharacters
+          request(app)
+            .get(`${basePath}?name=${dummyCharacter.name}`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body).toBeInstanceOf(Array)
+              expect(res.body).toHaveLength(1)
+
+              const [character] = res.body
+              expect(character.name).toBe(dummyCharacter.name)
+              expect(
+                character.image.includes(dummyCharacter.image)
+              ).toBeTruthy()
+              done()
+            })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('Filter characters by age', (done) => {
+      Character.bulkCreate(dummyCharacters)
+        .then(() => {
+          const [dummyCharacter] = dummyCharacters
+          request(app)
+            .get(`${basePath}?age=${dummyCharacter.age}`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body).toBeInstanceOf(Array)
+              expect(res.body).toHaveLength(1)
+
+              const [character] = res.body
+              expect(
+                character.image.includes(dummyCharacter.image)
+              ).toBeTruthy()
+              done()
+            })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('Filter characters by weight', (done) => {
+      Character.bulkCreate(dummyCharacters)
+        .then(() => {
+          const [dummyCharacter] = dummyCharacters
+          request(app)
+            .get(`${basePath}?weight=${dummyCharacter.weight}`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body).toBeInstanceOf(Array)
+              expect(res.body).toHaveLength(1)
+
+              const [character] = res.body
+              expect(
+                character.image.includes(dummyCharacter.image)
+              ).toBeTruthy()
+              done()
+            })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('Filter characters by movie id', (done) => {
+      Character.bulkCreate(dummyCharacters)
+        .then((charactersInDB) => {
+          const [characterInDB] = charactersInDB
+          Movie.create(dummyMovie)
+            .then((movieInDB) => {
+              characterInDB
+                .addMovie(movieInDB)
+                .then(() => {
+                  request(app)
+                    .get(`${basePath}?movies=${movieInDB.id}`)
+                    .set('Authorization', `Bearer ${authToken}`)
+                    .end((err, res) => {
+                      expect(res.status).toBe(200)
+                      expect(res.body).toBeInstanceOf(Array)
+                      expect(res.body).toHaveLength(1)
+
+                      const [character] = res.body
+                      expect(character.name).toBe(characterInDB.name)
+                      expect(character.image).toBe(characterInDB.image)
+
+                      expect(character.movies).toBeInstanceOf(Array)
+                      expect(character.movies).toHaveLength(1)
+                      const [movie] = character.movies
+                      expect(movie.title).toBe(movieInDB.title)
+                      expect(movie.image).toBe(movieInDB.image)
+                      done()
+                    })
+                })
+                .catch((err) => done(err))
+            })
+            .catch((err) => done(err))
+        })
+        .catch((err) => done(err))
+    })
+
     test('There are no characters, return empty array', (done) => {
       request(app)
         .get(basePath)
