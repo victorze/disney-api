@@ -20,7 +20,17 @@ db.sequelize = sequelize
 db.Sequelize = Sequelize
 
 db.User = require('./user')(sequelize)
-db.Character = require('./character')(sequelize)
 db.Movie = require('./movie')(sequelize)
+db.Character = require('./character')(sequelize)
+
+// Associations
+db.Movie.belongsToMany(db.Character, {
+  through: 'CharacterMovies',
+  as: 'characters',
+})
+db.Character.belongsToMany(db.Movie, {
+  through: 'CharacterMovies',
+  as: 'movies',
+})
 
 module.exports = db

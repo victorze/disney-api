@@ -2,8 +2,9 @@ const request = require('supertest')
 const { app, server } = require('../src/server')
 const db = require('../src/models')
 
-const Character = db.Character
 const User = db.User
+const Character = db.Character
+const Movie = db.Movie
 const basePath = '/characters'
 
 process.env.JWT_SECRET = 'secret'
@@ -24,6 +25,13 @@ const dummyCharacters = [
     image: '/images/joe.png',
   },
 ]
+
+const dummyMovie = {
+  title: 'The Lion King',
+  releaseDate: new Date(1994, 6, 8),
+  rating: 5,
+  image: '/images/the-lion-king.png',
+}
 
 describe('characters', () => {
   let authToken
@@ -47,7 +55,7 @@ describe('characters', () => {
   })
 
   beforeEach((done) => {
-    Character.destroy({ truncate: true }).then(() => done())
+    Character.destroy({ truncate: { cascade: true } }).then(() => done())
   })
 
   afterAll(() => {
@@ -166,19 +174,33 @@ describe('characters', () => {
 
       Character.create(dummyCharacter)
         .then((character) => {
-          request(app)
-            .get(`${basePath}/${character.id}`)
-            .set('Authorization', `Bearer ${authToken}`)
-            .end((err, res) => {
-              expect(res.status).toBe(200)
-              expect(res.body.name).toBe(character.name)
-              expect(res.body.age).toBe(character.age)
-              expect(res.body.weight).toBe(character.weight)
-              expect(res.body.story).toBe(character.story)
-              expect(res.body.image.includes(character.image)).toBeTruthy()
-              expect(res.body.image.includes('http')).toBeTruthy()
-              done()
+          Movie.create(dummyMovie).then((movieInDB) => {
+            character.addMovie(movieInDB).then(() => {
+              request(app)
+                .get(`${basePath}/${character.id}`)
+                .set('Authorization', `Bearer ${authToken}`)
+                .end((err, res) => {
+                  expect(res.status).toBe(200)
+                  expect(res.body.name).toBe(character.name)
+                  expect(res.body.age).toBe(character.age)
+                  expect(res.body.weight).toBe(character.weight)
+                  expect(res.body.story).toBe(character.story)
+                  expect(res.body.image.includes(character.image)).toBeTruthy()
+                  expect(res.body.image.includes('http')).toBeTruthy()
+                  expect(res.body.movies).toBeInstanceOf(Array)
+                  expect(res.body.movies).toHaveLength(1)
+
+                  const [movie] = res.body.movies
+                  expect(movie.title).toBe(movieInDB.title)
+                  expect(movie.releaseDate).toBe(
+                    movieInDB.releaseDate.toISOString()
+                  )
+                  expect(movie.rating).toBe(movieInDB.rating)
+                  expect(movie.image).toBe(movieInDB.image)
+                  done()
+                })
             })
+          })
         })
         .catch((err) => done(err))
     })
@@ -196,7 +218,7 @@ describe('characters', () => {
   })
 
   // Update a specific character
-  describe('GET /characters/:id', () => {
+  describe('PUT /characters/:id', () => {
     test('Character exist, update character', (done) => {
       const [dummyCharacter] = dummyCharacters
 

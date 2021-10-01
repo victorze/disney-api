@@ -6,7 +6,11 @@ const logger = require('morgan')
 const { notFound, productionErrors } = require('./middleware/errors')
 const db = require('./models')
 
-db.sequelize.sync()
+if (process.env.NODE_ENV === 'test') {
+  db.sequelize.sync({ alter: true })
+} else {
+  db.sequelize.sync()
+}
 
 const app = express()
 app.use(logger('dev', { skip: () => process.env.NODE_ENV === 'test' }))

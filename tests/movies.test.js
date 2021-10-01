@@ -13,13 +13,13 @@ const dummyMovies = [
     title: 'The Lion King',
     releaseDate: new Date(1994, 6, 8).toISOString(),
     rating: '5',
-    image: '/images/movies/the-lion-king.png',
+    image: '/images/the-lion-king.png',
   },
   {
     title: '101 Dalmatians',
     releaseDate: new Date(1961, 0, 25).toISOString(),
     rating: '4',
-    image: '/images/movies/101-dalmatians.png',
+    image: '/images/101-dalmatians.png',
   },
 ]
 
@@ -45,7 +45,7 @@ describe('movies', () => {
   })
 
   beforeEach((done) => {
-    Movie.destroy({ truncate: true }).then(() => done())
+    Movie.destroy({ truncate: { cascade: true } }).then(() => done())
   })
 
   afterAll(() => {
@@ -179,7 +179,7 @@ describe('movies', () => {
   })
 
   // Update a specific movie
-  describe('GET /movies/:id', () => {
+  describe('PUT /movies/:id', () => {
     test('Movie exist, update movie', (done) => {
       const [dummyMovie] = dummyMovies
 
