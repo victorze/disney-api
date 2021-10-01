@@ -40,4 +40,9 @@ db.Character.belongsToMany(db.Movie, {
   as: 'movies',
 })
 
+db.Movie.belongsToMany(db.Genre, {
+  through: 'GenreMovies',
+  as: 'genres',
+})
+
 module.exports = db

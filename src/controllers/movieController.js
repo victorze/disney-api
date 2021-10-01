@@ -12,9 +12,20 @@ const store = async (req, res) => {
 const index = async (req, res) => {
   const options = { attributes: ['id', 'title', 'releaseDate', 'image'] }
 
-  req.query.order
-    ? (options.order = [['releaseDate', req.query.order]])
-    : (options.where = req.query)
+  if (req.query.genre) {
+    options.include = [
+      {
+        model: db.Genre,
+        as: 'genres',
+        through: { where: { GenreId: req.query.genre } },
+        required: true,
+      },
+    ]
+  } else {
+    req.query.order
+      ? (options.order = [['releaseDate', req.query.order]])
+      : (options.where = req.query)
+  }
 
   const movies = await Movie.findAll(options)
   res.json(movies)

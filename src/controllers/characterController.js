@@ -10,9 +10,10 @@ const store = async (req, res) => {
 }
 
 const index = async (req, res) => {
-  let include
+  const options = { attributes: ['id', 'name', 'image'] }
+
   if (req.query.movies) {
-    include = [
+    options.include = [
       {
         model: db.Movie,
         as: 'movies',
@@ -20,10 +21,9 @@ const index = async (req, res) => {
         required: true,
       },
     ]
+  } else {
+    options.where = req.query
   }
-
-  const options = { attributes: ['id', 'name', 'image'] }
-  include ? (options.include = include) : (options.where = req.query)
 
   const characters = await Character.findAll(options)
   res.json(characters)

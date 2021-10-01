@@ -3,8 +3,9 @@ const { app, server } = require('../src/server')
 const db = require('../src/models')
 
 const User = db.User
-const Movie = db.Movie
 const Character = db.Character
+const Movie = db.Movie
+const Genre = db.Genre
 const basePath = '/movies'
 
 process.env.JWT_SECRET = 'secret'
@@ -213,6 +214,48 @@ describe('movies', () => {
               expect(movie.image).toBe(movieInDB.image)
               done()
             })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('Filter movies by genre id', (done) => {
+      Movie.bulkCreate(dummyMovies)
+        .then((movies) => {
+          const [movieInDB] = movies
+          Genre.findAll()
+            .then((genres) => {
+              const [genreInDB] = genres
+              movieInDB
+                .addGenre(genreInDB)
+                .then(() => {
+                  request(app)
+                    .get(`${basePath}?genre=${genreInDB.id}`)
+                    .set('Authorization', `Bearer ${authToken}`)
+                    .end((err, res) => {
+                      expect(res.status).toBe(200)
+                      expect(res.body).toBeInstanceOf(Array)
+                      expect(res.body).toHaveLength(1)
+
+                      const [movie] = res.body
+                      expect(movie.id).toBe(movieInDB.id)
+                      expect(movie.title).toBe(movieInDB.title)
+                      expect(movie.releaseDate).toBe(
+                        movieInDB.releaseDate.toISOString()
+                      )
+                      expect(movie.image).toBe(movieInDB.image)
+
+                      expect(movie.genres).toBeInstanceOf(Array)
+                      expect(movie.genres).toHaveLength(1)
+                      const [genre] = movie.genres
+                      expect(genre.id).toBe(genreInDB.id)
+                      expect(genre.name).toBe(genreInDB.name)
+                      expect(genre.image).toBe(genreInDB.image)
+                      done()
+                    })
+                })
+                .catch((err) => done(err))
+            })
+            .catch((err) => done(err))
         })
         .catch((err) => done(err))
     })
