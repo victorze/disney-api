@@ -174,33 +174,40 @@ describe('characters', () => {
 
       Character.create(dummyCharacter)
         .then((character) => {
-          Movie.create(dummyMovie).then((movieInDB) => {
-            character.addMovie(movieInDB).then(() => {
-              request(app)
-                .get(`${basePath}/${character.id}`)
-                .set('Authorization', `Bearer ${authToken}`)
-                .end((err, res) => {
-                  expect(res.status).toBe(200)
-                  expect(res.body.name).toBe(character.name)
-                  expect(res.body.age).toBe(character.age)
-                  expect(res.body.weight).toBe(character.weight)
-                  expect(res.body.story).toBe(character.story)
-                  expect(res.body.image.includes(character.image)).toBeTruthy()
-                  expect(res.body.image.includes('http')).toBeTruthy()
-                  expect(res.body.movies).toBeInstanceOf(Array)
-                  expect(res.body.movies).toHaveLength(1)
+          Movie.create(dummyMovie)
+            .then((movieInDB) => {
+              character
+                .addMovie(movieInDB)
+                .then(() => {
+                  request(app)
+                    .get(`${basePath}/${character.id}`)
+                    .set('Authorization', `Bearer ${authToken}`)
+                    .end((err, res) => {
+                      expect(res.status).toBe(200)
+                      expect(res.body.name).toBe(character.name)
+                      expect(res.body.age).toBe(character.age)
+                      expect(res.body.weight).toBe(character.weight)
+                      expect(res.body.story).toBe(character.story)
+                      expect(
+                        res.body.image.includes(character.image)
+                      ).toBeTruthy()
+                      expect(res.body.image.includes('http')).toBeTruthy()
+                      expect(res.body.movies).toBeInstanceOf(Array)
+                      expect(res.body.movies).toHaveLength(1)
 
-                  const [movie] = res.body.movies
-                  expect(movie.title).toBe(movieInDB.title)
-                  expect(movie.releaseDate).toBe(
-                    movieInDB.releaseDate.toISOString()
-                  )
-                  expect(movie.rating).toBe(movieInDB.rating)
-                  expect(movie.image).toBe(movieInDB.image)
-                  done()
+                      const [movie] = res.body.movies
+                      expect(movie.title).toBe(movieInDB.title)
+                      expect(movie.releaseDate).toBe(
+                        movieInDB.releaseDate.toISOString()
+                      )
+                      expect(movie.rating).toBe(movieInDB.rating)
+                      expect(movie.image).toBe(movieInDB.image)
+                      done()
+                    })
                 })
+                .catch((err) => done(err))
             })
-          })
+            .catch((err) => done(err))
         })
         .catch((err) => done(err))
     })

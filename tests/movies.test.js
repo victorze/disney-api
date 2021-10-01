@@ -4,6 +4,7 @@ const db = require('../src/models')
 
 const User = db.User
 const Movie = db.Movie
+const Character = db.Character
 const basePath = '/movies'
 
 process.env.JWT_SECRET = 'secret'
@@ -22,6 +23,14 @@ const dummyMovies = [
     image: '/images/101-dalmatians.png',
   },
 ]
+
+const dummyCharacter = {
+  name: 'Jane',
+  age: 33,
+  weight: 88.5,
+  story: 'Jane story',
+  image: '/images/jane.png',
+}
 
 describe('movies', () => {
   let authToken
@@ -150,18 +159,38 @@ describe('movies', () => {
 
       Movie.create(dummyMovie)
         .then((movie) => {
-          request(app)
-            .get(`${basePath}/${movie.id}`)
-            .set('Authorization', `Bearer ${authToken}`)
-            .end((err, res) => {
-              expect(res.status).toBe(200)
-              expect(res.body.title).toBe(movie.title)
-              expect(res.body.releaseDate).toBe(movie.releaseDate.toISOString())
-              expect(res.body.rating).toBe(movie.rating)
-              expect(res.body.image.includes(movie.image)).toBeTruthy()
-              expect(res.body.image.includes('http')).toBeTruthy()
-              done()
+          Character.create(dummyCharacter)
+            .then((characterInDB) => {
+              movie
+                .addCharacter(characterInDB)
+                .then(() => {
+                  request(app)
+                    .get(`${basePath}/${movie.id}`)
+                    .set('Authorization', `Bearer ${authToken}`)
+                    .end((err, res) => {
+                      expect(res.status).toBe(200)
+                      expect(res.body.title).toBe(movie.title)
+                      expect(res.body.releaseDate).toBe(
+                        movie.releaseDate.toISOString()
+                      )
+                      expect(res.body.rating).toBe(movie.rating)
+                      expect(res.body.image.includes(movie.image)).toBeTruthy()
+                      expect(res.body.image.includes('http')).toBeTruthy()
+                      expect(res.body.characters).toBeInstanceOf(Array)
+                      expect(res.body.characters).toHaveLength(1)
+
+                      const [character] = res.body.characters
+                      expect(character.name).toBe(characterInDB.name)
+                      expect(character.age).toBe(characterInDB.age)
+                      expect(character.weight).toBe(characterInDB.weight)
+                      expect(character.story).toBe(characterInDB.story)
+                      expect(character.image).toBe(characterInDB.image)
+                      done()
+                    })
+                })
+                .catch((err) => done(err))
             })
+            .catch((err) => done(err))
         })
         .catch((err) => done(err))
     })

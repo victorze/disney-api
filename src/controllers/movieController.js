@@ -17,7 +17,9 @@ const index = async (req, res) => {
 }
 
 const show = async (req, res) => {
-  const movie = await Movie.findByPk(req.params.id)
+  const movie = await Movie.findByPk(req.params.id, {
+    include: 'characters',
+  })
   if (!movie) throw new NotFoundError()
   res.json(movie)
 }
