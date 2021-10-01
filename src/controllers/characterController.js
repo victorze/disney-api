@@ -22,9 +22,7 @@ const index = async (req, res) => {
     ]
   }
 
-  const options = {
-    attributes: ['id', 'name', 'image'],
-  }
+  const options = { attributes: ['id', 'name', 'image'] }
   include ? (options.include = include) : (options.where = req.query)
 
   const characters = await Character.findAll(options)

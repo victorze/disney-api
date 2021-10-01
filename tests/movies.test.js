@@ -142,7 +142,7 @@ describe('movies', () => {
         .catch((err) => done(err))
     })
 
-    test('Filter movie by title', (done) => {
+    test('Filter movies by title', (done) => {
       Movie.bulkCreate(dummyMovies)
         .then((movies) => {
           const [movieInDB] = movies
@@ -155,6 +155,56 @@ describe('movies', () => {
               expect(res.body).toHaveLength(1)
 
               const [movie] = res.body
+              expect(movie.id).toBe(movieInDB.id)
+              expect(movie.title).toBe(movieInDB.title)
+              expect(movie.releaseDate).toBe(
+                movieInDB.releaseDate.toISOString()
+              )
+              expect(movie.image).toBe(movieInDB.image)
+              done()
+            })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('Sort movies in descending order', (done) => {
+      Movie.bulkCreate(dummyMovies)
+        .then((movies) => {
+          const [movieInDB] = movies
+          request(app)
+            .get(`${basePath}?order=DESC`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body).toBeInstanceOf(Array)
+              expect(res.body).toHaveLength(2)
+
+              const [movie] = res.body
+              expect(movie.id).toBe(movieInDB.id)
+              expect(movie.title).toBe(movieInDB.title)
+              expect(movie.releaseDate).toBe(
+                movieInDB.releaseDate.toISOString()
+              )
+              expect(movie.image).toBe(movieInDB.image)
+              done()
+            })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('Sort movies in ascending order', (done) => {
+      Movie.bulkCreate(dummyMovies)
+        .then((movies) => {
+          const [movieInDB] = movies
+          request(app)
+            .get(`${basePath}?order=ASC`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body).toBeInstanceOf(Array)
+              expect(res.body).toHaveLength(2)
+
+              const [, movie] = res.body
               expect(movie.id).toBe(movieInDB.id)
               expect(movie.title).toBe(movieInDB.title)
               expect(movie.releaseDate).toBe(
