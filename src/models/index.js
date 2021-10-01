@@ -20,8 +20,15 @@ db.sequelize = sequelize
 db.Sequelize = Sequelize
 
 db.User = require('./user')(sequelize)
-db.Movie = require('./movie')(sequelize)
 db.Character = require('./character')(sequelize)
+db.Movie = require('./movie')(sequelize)
+db.Genre = require('./genre')(sequelize)
+
+db.Genre.count().then((numberOfGenres) => {
+  if (numberOfGenres === 0) {
+    db.Genre.bulkCreate(db.Genre.data).then('List of genres created')
+  }
+})
 
 // Associations
 db.Movie.belongsToMany(db.Character, {
