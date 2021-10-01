@@ -134,7 +134,8 @@ describe('characters', () => {
   describe('GET /characters', () => {
     test('There are characters, return an array', (done) => {
       Character.bulkCreate(dummyCharacters)
-        .then(() => {
+        .then((characters) => {
+          const [characterInDB] = characters
           request(app)
             .get(basePath)
             .set('Authorization', `Bearer ${authToken}`)
@@ -145,9 +146,11 @@ describe('characters', () => {
 
               const [character] = res.body
               expect(Object.keys(character)).toHaveLength(3)
-              expect(character.id).toBeDefined()
-              expect(character.name).toBeDefined()
-              expect(character.image).toBeDefined()
+              expect(character.id).toBe(characterInDB.id)
+              expect(character.name).toBe(characterInDB.name)
+              expect(
+                character.image.includes(characterInDB.image)
+              ).toBeTruthy()
               done()
             })
         })
@@ -156,10 +159,10 @@ describe('characters', () => {
 
     test('Filter characters by name', (done) => {
       Character.bulkCreate(dummyCharacters)
-        .then(() => {
-          const [dummyCharacter] = dummyCharacters
+        .then((characters) => {
+          const [characterInDB] = characters
           request(app)
-            .get(`${basePath}?name=${dummyCharacter.name}`)
+            .get(`${basePath}?name=${characterInDB.name}`)
             .set('Authorization', `Bearer ${authToken}`)
             .end((err, res) => {
               expect(res.status).toBe(200)
@@ -167,9 +170,10 @@ describe('characters', () => {
               expect(res.body).toHaveLength(1)
 
               const [character] = res.body
-              expect(character.name).toBe(dummyCharacter.name)
+              expect(character.id).toBe(characterInDB.id)
+              expect(character.name).toBe(characterInDB.name)
               expect(
-                character.image.includes(dummyCharacter.image)
+                character.image.includes(characterInDB.image)
               ).toBeTruthy()
               done()
             })
@@ -179,10 +183,10 @@ describe('characters', () => {
 
     test('Filter characters by age', (done) => {
       Character.bulkCreate(dummyCharacters)
-        .then(() => {
-          const [dummyCharacter] = dummyCharacters
+        .then((characters) => {
+          const [characterInDB] = characters
           request(app)
-            .get(`${basePath}?age=${dummyCharacter.age}`)
+            .get(`${basePath}?age=${characterInDB.age}`)
             .set('Authorization', `Bearer ${authToken}`)
             .end((err, res) => {
               expect(res.status).toBe(200)
@@ -190,8 +194,10 @@ describe('characters', () => {
               expect(res.body).toHaveLength(1)
 
               const [character] = res.body
+              expect(character.id).toBe(characterInDB.id)
+              expect(character.name).toBe(characterInDB.name)
               expect(
-                character.image.includes(dummyCharacter.image)
+                character.image.includes(characterInDB.image)
               ).toBeTruthy()
               done()
             })
@@ -201,10 +207,10 @@ describe('characters', () => {
 
     test('Filter characters by weight', (done) => {
       Character.bulkCreate(dummyCharacters)
-        .then(() => {
-          const [dummyCharacter] = dummyCharacters
+        .then((characters) => {
+          const [characterInDB] = characters
           request(app)
-            .get(`${basePath}?weight=${dummyCharacter.weight}`)
+            .get(`${basePath}?weight=${characterInDB.weight}`)
             .set('Authorization', `Bearer ${authToken}`)
             .end((err, res) => {
               expect(res.status).toBe(200)
@@ -212,8 +218,10 @@ describe('characters', () => {
               expect(res.body).toHaveLength(1)
 
               const [character] = res.body
+              expect(character.id).toBe(characterInDB.id)
+              expect(character.name).toBe(characterInDB.name)
               expect(
-                character.image.includes(dummyCharacter.image)
+                character.image.includes(characterInDB.image)
               ).toBeTruthy()
               done()
             })
@@ -239,12 +247,14 @@ describe('characters', () => {
                       expect(res.body).toHaveLength(1)
 
                       const [character] = res.body
+                      expect(character.id).toBe(characterInDB.id)
                       expect(character.name).toBe(characterInDB.name)
                       expect(character.image).toBe(characterInDB.image)
 
                       expect(character.movies).toBeInstanceOf(Array)
                       expect(character.movies).toHaveLength(1)
                       const [movie] = character.movies
+                      expect(movie.id).toBe(movieInDB.id)
                       expect(movie.title).toBe(movieInDB.title)
                       expect(movie.image).toBe(movieInDB.image)
                       done()
