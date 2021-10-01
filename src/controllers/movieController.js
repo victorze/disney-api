@@ -12,6 +12,7 @@ const store = async (req, res) => {
 const index = async (req, res) => {
   let movies = await Movie.findAll({
     attributes: ['id', 'title', 'releaseDate', 'image'],
+    where: req.query,
   })
   res.json(movies)
 }

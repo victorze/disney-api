@@ -148,9 +148,7 @@ describe('characters', () => {
               expect(Object.keys(character)).toHaveLength(3)
               expect(character.id).toBe(characterInDB.id)
               expect(character.name).toBe(characterInDB.name)
-              expect(
-                character.image.includes(characterInDB.image)
-              ).toBeTruthy()
+              expect(character.image.includes(characterInDB.image)).toBeTruthy()
               done()
             })
         })
@@ -172,9 +170,7 @@ describe('characters', () => {
               const [character] = res.body
               expect(character.id).toBe(characterInDB.id)
               expect(character.name).toBe(characterInDB.name)
-              expect(
-                character.image.includes(characterInDB.image)
-              ).toBeTruthy()
+              expect(character.image.includes(characterInDB.image)).toBeTruthy()
               done()
             })
         })
@@ -196,9 +192,7 @@ describe('characters', () => {
               const [character] = res.body
               expect(character.id).toBe(characterInDB.id)
               expect(character.name).toBe(characterInDB.name)
-              expect(
-                character.image.includes(characterInDB.image)
-              ).toBeTruthy()
+              expect(character.image.includes(characterInDB.image)).toBeTruthy()
               done()
             })
         })
@@ -220,9 +214,7 @@ describe('characters', () => {
               const [character] = res.body
               expect(character.id).toBe(characterInDB.id)
               expect(character.name).toBe(characterInDB.name)
-              expect(
-                character.image.includes(characterInDB.image)
-              ).toBeTruthy()
+              expect(character.image.includes(characterInDB.image)).toBeTruthy()
               done()
             })
         })

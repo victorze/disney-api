@@ -118,7 +118,8 @@ describe('movies', () => {
   describe('GET /movies', () => {
     test('There are movies, return an array', (done) => {
       Movie.bulkCreate(dummyMovies)
-        .then(() => {
+        .then((movies) => {
+          const [movieInDB] = movies
           request(app)
             .get(basePath)
             .set('Authorization', `Bearer ${authToken}`)
@@ -129,10 +130,37 @@ describe('movies', () => {
 
               const [movie] = res.body
               expect(Object.keys(movie)).toHaveLength(4)
-              expect(movie.id).toBeDefined()
-              expect(movie.title).toBeDefined()
-              expect(movie.releaseDate).toBeDefined()
-              expect(movie.image).toBeDefined()
+              expect(movie.id).toBe(movieInDB.id)
+              expect(movie.title).toBe(movieInDB.title)
+              expect(movie.releaseDate).toBe(
+                movieInDB.releaseDate.toISOString()
+              )
+              expect(movie.image).toBe(movieInDB.image)
+              done()
+            })
+        })
+        .catch((err) => done(err))
+    })
+
+    test('Filter movie by title', (done) => {
+      Movie.bulkCreate(dummyMovies)
+        .then((movies) => {
+          const [movieInDB] = movies
+          request(app)
+            .get(`${basePath}?title=${movieInDB.title}`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .end((err, res) => {
+              expect(res.status).toBe(200)
+              expect(res.body).toBeInstanceOf(Array)
+              expect(res.body).toHaveLength(1)
+
+              const [movie] = res.body
+              expect(movie.id).toBe(movieInDB.id)
+              expect(movie.title).toBe(movieInDB.title)
+              expect(movie.releaseDate).toBe(
+                movieInDB.releaseDate.toISOString()
+              )
+              expect(movie.image).toBe(movieInDB.image)
               done()
             })
         })
