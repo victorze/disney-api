@@ -3,6 +3,9 @@ const path = require('path')
 const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
+const swaggerUI = require('swagger-ui-express')
+const swaggerDocument = require('../docs')
+
 const { notFound, productionErrors } = require('./middleware/errors')
 const db = require('./models')
 
@@ -25,6 +28,7 @@ app.use((req, res, next) => {
 app.use(cors())
 
 app.use(require('./routes'))
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
 app.use(notFound)
 app.use(productionErrors)
