@@ -2,7 +2,7 @@ require('dotenv').config()
 const path = require('path')
 const express = require('express')
 const logger = require('morgan')
-
+const cors = require('cors')
 const { notFound, productionErrors } = require('./middleware/errors')
 const db = require('./models')
 
@@ -21,6 +21,8 @@ app.use((req, res, next) => {
   process.env.SCHEME_AND_HOST = `${req.protocol}://${req.get('host')}`
   next()
 })
+
+app.use(cors())
 
 app.use(require('./routes'))
 
