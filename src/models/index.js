@@ -34,15 +34,23 @@ db.Genre.count().then((numberOfGenres) => {
 db.Movie.belongsToMany(db.Character, {
   through: 'CharacterMovies',
   as: 'characters',
+  foreignKey: 'movieId',
 })
 db.Character.belongsToMany(db.Movie, {
   through: 'CharacterMovies',
   as: 'movies',
+  foreignKey: 'characterId',
 })
 
 db.Movie.belongsToMany(db.Genre, {
   through: 'GenreMovies',
   as: 'genres',
+  foreignKey: 'movieId',
+})
+db.Genre.belongsToMany(db.Movie, {
+  through: 'GenreMovies',
+  as: 'movies',
+  foreignKey: 'genreId',
 })
 
 module.exports = db

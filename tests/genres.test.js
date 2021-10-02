@@ -6,8 +6,6 @@ const Genre = db.Genre
 const User = db.User
 const basePath = '/genres'
 
-process.env.JWT_SECRET = 'secret'
-
 describe('characters', () => {
   let authToken
 

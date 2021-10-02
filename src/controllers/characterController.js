@@ -17,7 +17,7 @@ const index = async (req, res) => {
       {
         model: db.Movie,
         as: 'movies',
-        through: { where: { MovieId: req.query.movies } },
+        through: { where: { movieId: req.query.movies } },
         required: true,
       },
     ]

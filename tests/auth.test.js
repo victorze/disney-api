@@ -7,8 +7,6 @@ const db = require('../src/models')
 const User = db.User
 const basePath = '/auth'
 
-process.env.JWT_SECRET = 'secret'
-
 const dummyUser = {
   name: 'foo',
   email: 'foo@email.com',

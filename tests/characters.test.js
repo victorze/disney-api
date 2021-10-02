@@ -7,8 +7,6 @@ const Character = db.Character
 const Movie = db.Movie
 const basePath = '/characters'
 
-process.env.JWT_SECRET = 'secret'
-
 const dummyCharacters = [
   {
     name: 'Jane',

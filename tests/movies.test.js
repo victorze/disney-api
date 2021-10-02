@@ -8,8 +8,6 @@ const Movie = db.Movie
 const Genre = db.Genre
 const basePath = '/movies'
 
-process.env.JWT_SECRET = 'secret'
-
 const dummyMovies = [
   {
     title: 'The Lion King',
