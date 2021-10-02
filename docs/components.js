@@ -49,8 +49,7 @@ module.exports = {
         properties: {
           message: {
             type: 'string',
-            description: 'Authentication information is missing or invalid',
-            example: 'JWT authentication error',
+            description: 'Error message',
           },
         },
       },
@@ -59,8 +58,19 @@ module.exports = {
         properties: {
           message: {
             type: 'string',
-            description: 'Resource not found',
-            example: 'Resource not found',
+            description: 'Error message',
+          },
+        },
+      },
+      ValidationError: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              description: 'Error message',
+            },
           },
         },
       },

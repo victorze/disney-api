@@ -1,7 +1,7 @@
 module.exports = {
   tags: [
     {
-      name: 'users',
+      name: 'auth',
     },
     {
       name: 'characters',

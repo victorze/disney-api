@@ -3,6 +3,7 @@ const servers = require('./servers')
 const tags = require('./tags')
 const components = require('./components')
 const genres = require('./genres')
+const auth = require('./auth')
 
 module.exports = {
   ...basicInfo,
@@ -10,4 +11,5 @@ module.exports = {
   ...tags,
   ...components,
   ...genres,
+  ...auth,
 }

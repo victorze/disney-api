@@ -13,7 +13,7 @@ const sendWelcomeEmail = async (to) => {
     from: process.env.MAIL_FROM_ADDRESS,
     subject: 'Welcome to Disney API!',
     text: 'Enjoy!',
-    html: '<h3 style="text-align: center;">Enjoy!<h3>',
+    html: '<h1 style="text-align: center;">Enjoy!<h1>',
   }
 
   try {
