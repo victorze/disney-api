@@ -20,7 +20,7 @@ module.exports = {
         description: 'Sort movies',
         schema: {
           type: 'string',
-          enum: ['ASC', 'DESC']
+          enum: ['ASC', 'DESC'],
         },
       },
       {

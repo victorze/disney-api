@@ -8,6 +8,9 @@ module.exports = {
     '/auth/register': {
       ...auth.register,
     },
+    '/auth/login': {
+      ...auth.login,
+    },
     '/characters': {
       ...characters.store,
       ...characters.list,
@@ -25,9 +28,6 @@ module.exports = {
       ...movies.show,
       ...movies.update,
       ...movies.destroy,
-    },
-    '/auth/login': {
-      ...auth.login,
     },
     '/genres/{id}': {
       ...genres.show,

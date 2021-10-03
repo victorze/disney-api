@@ -47,7 +47,7 @@ module.exports = {
         properties: {
           id: {
             type: 'integer',
-            example: 23
+            example: 23,
           },
           name: {
             type: 'string',
@@ -57,18 +57,19 @@ module.exports = {
           age: {
             type: 'integer',
             required: true,
-            example: 10
+            example: 10,
           },
           weight: {
             type: 'number',
             format: 'float',
             required: true,
-            example: 45.5
+            example: 45.5,
           },
           story: {
             type: 'string',
             required: true,
-            example: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, odit! Nam adipisci beatae velit, esse assumenda sed facere unde suscipit iure. Quod delectus, aut perferendis asperiores eligendi laborum culpa vero.'
+            example:
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, odit! Nam adipisci beatae velit, esse assumenda sed facere unde suscipit iure. Quod delectus, aut perferendis asperiores eligendi laborum culpa vero.',
           },
           image: {
             type: 'string',
@@ -90,7 +91,7 @@ module.exports = {
         properties: {
           id: {
             type: 'integer',
-            example: 23
+            example: 23,
           },
           name: {
             type: 'string',
@@ -100,18 +101,19 @@ module.exports = {
           age: {
             type: 'integer',
             required: true,
-            example: 10
+            example: 10,
           },
           weight: {
             type: 'number',
             format: 'float',
             required: true,
-            example: 45.5
+            example: 45.5,
           },
           story: {
             type: 'string',
             required: true,
-            example: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, odit! Nam adipisci beatae velit, esse assumenda sed facere unde suscipit iure. Quod delectus, aut perferendis asperiores eligendi laborum culpa vero.'
+            example:
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, odit! Nam adipisci beatae velit, esse assumenda sed facere unde suscipit iure. Quod delectus, aut perferendis asperiores eligendi laborum culpa vero.',
           },
           image: {
             type: 'string',
@@ -130,8 +132,8 @@ module.exports = {
             type: 'array',
             items: {
               $ref: '#/components/definitions/Movie',
-            }
-          }
+            },
+          },
         },
       },
       CharacterItem: {
@@ -139,7 +141,7 @@ module.exports = {
         properties: {
           id: {
             type: 'integer',
-            example: 23
+            example: 23,
           },
           name: {
             type: 'string',
@@ -166,7 +168,7 @@ module.exports = {
           },
           rating: {
             type: 'integer',
-            enum: [1, 2, 3, 4 ,5]
+            enum: [1, 2, 3, 4, 5],
           },
           image: {
             type: 'string',
@@ -179,7 +181,7 @@ module.exports = {
         properties: {
           id: {
             type: 'integer',
-            example: 10
+            example: 10,
           },
           title: {
             type: 'string',
@@ -194,7 +196,7 @@ module.exports = {
           rating: {
             type: 'integer',
             required: true,
-            enum: [1, 2, 3, 4, 5]
+            enum: [1, 2, 3, 4, 5],
           },
           image: {
             type: 'string',
@@ -208,7 +210,7 @@ module.exports = {
           updatedAt: {
             type: 'string',
             format: 'date-time',
-          }
+          },
         },
       },
       MovieShow: {
@@ -216,7 +218,7 @@ module.exports = {
         properties: {
           id: {
             type: 'integer',
-            example: 10
+            example: 10,
           },
           title: {
             type: 'string',
@@ -231,7 +233,7 @@ module.exports = {
           rating: {
             type: 'integer',
             required: true,
-            enum: [1, 2, 3, 4 ,5]
+            enum: [1, 2, 3, 4, 5],
           },
           image: {
             type: 'string',
@@ -250,8 +252,8 @@ module.exports = {
             type: 'array',
             items: {
               $ref: '#/components/definitions/Character',
-            }
-          }
+            },
+          },
         },
       },
       MovieItem: {
@@ -259,7 +261,7 @@ module.exports = {
         properties: {
           id: {
             type: 'integer',
-            example: 10
+            example: 10,
           },
           title: {
             type: 'string',

@@ -24,12 +24,6 @@ db.Character = require('./character')(sequelize)
 db.Movie = require('./movie')(sequelize)
 db.Genre = require('./genre')(sequelize)
 
-db.Genre.count().then((numberOfGenres) => {
-  if (numberOfGenres === 0) {
-    db.Genre.bulkCreate(db.Genre.data).then('List of genres created')
-  }
-})
-
 // Associations
 db.Movie.belongsToMany(db.Character, {
   through: 'CharacterMovies',
@@ -52,5 +46,21 @@ db.Genre.belongsToMany(db.Movie, {
   as: 'movies',
   foreignKey: 'genreId',
 })
+
+const fillGenresTable = () => {
+  db.Genre.count().then((numberOfGenres) => {
+    if (numberOfGenres === 0) {
+      db.Genre.bulkCreate(db.Genre.data).then('List of genres created')
+    }
+  })
+}
+
+db.sync = () => {
+  if (process.env.NODE_ENV === 'test') {
+    db.sequelize.sync({ alter: true }).then(fillGenresTable)
+  } else {
+    db.sequelize.sync().then(fillGenresTable)
+  }
+}
 
 module.exports = db
