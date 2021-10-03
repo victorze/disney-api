@@ -1,7 +1,7 @@
 {
   "name": "disney-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "API to explore the world of Disney",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
