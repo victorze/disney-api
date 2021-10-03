@@ -1,5 +1,6 @@
 const auth = require('./auth')
 const characters = require('./characters')
+const movies = require('./movies')
 const genres = require('./genres')
 
 module.exports = {
@@ -15,6 +16,15 @@ module.exports = {
       ...characters.show,
       ...characters.update,
       ...characters.destroy,
+    },
+    '/movies': {
+      ...movies.store,
+      ...movies.list,
+    },
+    '/movies/{id}': {
+      ...movies.show,
+      ...movies.update,
+      ...movies.destroy,
     },
     '/auth/login': {
       ...auth.login,
