@@ -1,14 +1,14 @@
 module.exports = {
-  get: {
-    tags: ['genres'],
-    summary: 'Find genre by id',
-    description: 'Returns a single genre',
-    operationId: 'getGenreById',
+  delete: {
+    tags: ['characters'],
+    summary: 'Deletes a character',
+    description: '',
+    operationId: 'deleteCharacter',
     parameters: [
       {
         name: 'id',
         in: 'path',
-        description: 'id of genre to return',
+        description: 'Character id to delete',
         required: true,
         schema: {
           $ref: '#/components/definitions/id',
@@ -16,13 +16,11 @@ module.exports = {
       },
     ],
     responses: {
-      200: {
+      204: {
         description: 'Successful operation',
         content: {
           'application/json': {
-            schema: {
-              $ref: '#/components/definitions/Genre',
-            },
+            schema: null,
           },
         },
       },
@@ -37,7 +35,7 @@ module.exports = {
         },
       },
       404: {
-        description: 'Genre not found',
+        description: 'Character not found',
         content: {
           'application/json': {
             schema: {

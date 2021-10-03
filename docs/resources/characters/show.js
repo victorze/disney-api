@@ -1,14 +1,15 @@
 module.exports = {
   get: {
-    tags: ['genres'],
-    summary: 'Find genre by id',
-    description: 'Returns a single genre',
-    operationId: 'getGenreById',
+    tags: ['characters'],
+    summary: 'Find character by id',
+    description: 'Returns a single character',
+    operationId: 'getCharacterById',
+    produces: ['application/json'],
     parameters: [
       {
         name: 'id',
         in: 'path',
-        description: 'id of genre to return',
+        description: 'id of character to return',
         required: true,
         schema: {
           $ref: '#/components/definitions/id',
@@ -21,7 +22,7 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/definitions/Genre',
+              $ref: '#/components/definitions/CharacterShow',
             },
           },
         },
@@ -37,7 +38,7 @@ module.exports = {
         },
       },
       404: {
-        description: 'Genre not found',
+        description: 'Character not found',
         content: {
           'application/json': {
             schema: {
