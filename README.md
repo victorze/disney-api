@@ -36,15 +36,12 @@ Las variables de entorno `SENDGRID_API_KEY` y `MAIL_FROM_ADDRESS` son opcionales
 
 # Uso
 
-La primera vez que ejecuta los tests, fallará el primer grupo de test.
-Esto es porque cuando se ejecuta el primer grupo de tests las tablas aun no fueron creadas.
-
-Para ejecutar los tests
+Ejecutar los tests
 ```
 npm run test
 ```
 
-Y para ejecutar la aplicación
+Ejecutar la aplicación
 ```
 npm start
 ```
