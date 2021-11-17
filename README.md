@@ -1,5 +1,9 @@
 # Disney API
 
+Esta aplicación es un desafío de programación de la organización [Alkemy](https://www.alkemy.org/es/).
+
+Puede ver los requerimientos técnicos [aquí](https://github.com/victorze/disney-api/files/7552015/Challenge.Backend.-.Node.pdf).
+
 https://user-images.githubusercontent.com/22132891/137372832-f979ca69-4517-45dd-bdf5-edde41edc750.mp4
 
 # Instalación
@@ -38,7 +42,7 @@ Las variables de entorno `SENDGRID_API_KEY` y `MAIL_FROM_ADDRESS` son opcionales
 Ejecutar los tests
 
 ```
-npm run test
+npm test
 ```
 
 Ejecutar la aplicación
