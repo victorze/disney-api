@@ -4,11 +4,11 @@
   "description": "API to explore the world of Disney",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
+    "start": "NODE_ENV=production node src/server.js",
+    "dev": "NODE_ENV=development nodemon src/server.js",
     "lint": "eslint src tests",
     "format": "prettier --write 'src/**/*.js' 'tests/**/*.js' 'docs/**/*.js'",
-    "test": "PORT=4000 jest --forceExit --detectOpenHandles",
+    "test": "PORT=4000 jest --verbose --forceExit --detectOpenHandles",
     "fasttest": "PORT=4000 jest --forceExit --detectOpenHandles --testPathIgnorePatterns=tests/auth.test.js"
   },
   "keywords": [],

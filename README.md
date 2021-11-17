@@ -23,25 +23,28 @@ Puede utilizar docker para crear las bases de datos en PostgreSQL.
 docker run -d -e POSTGRES_USER=disneyapi -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=disneyapi -p 5432:5432 --name disneyapi postgres:13
 ```
 
-Conectese con un cliente al contenedor de PostgreSQL y cree la base de datos para ejecutar los tests.
+Conectese con un cliente a PostgreSQL y cree la base de datos para los tests: `disneyapitest`
 
 Haga una copia del archivo `.env.example`. A continuación, ingrese los valores de configuración en el archivo `.env`
 
 ```
 cp .env.example .env
 ```
+
 Las variables de entorno `SENDGRID_API_KEY` y `MAIL_FROM_ADDRESS` son opcionales.
 
 # Uso
 
 Ejecutar los tests
+
 ```
 npm run test
 ```
 
 Ejecutar la aplicación
+
 ```
 npm start
 ```
 
-Finalmente, navegar a http://localhost:3500/api-docs
+Finalmente, navegar a http://localhost:3000/api-docs
