@@ -1,54 +1,14 @@
 # Disney API
 
-Esta aplicación es un desafío de programación de la organización [Alkemy](https://www.alkemy.org/es/).
-
-Puede ver los requerimientos técnicos [aquí](https://github.com/victorze/disney-api/files/7552015/Challenge.Backend.-.Node.pdf).
-
 https://user-images.githubusercontent.com/22132891/137372832-f979ca69-4517-45dd-bdf5-edde41edc750.mp4
 
-# Instalación
+## Configurar un entorno de desarrollo
 
-```bash
-git clone https://github.com/victorze/disney-api.git
-cd disney-api
-npm install
-```
-
-# Configuración
-
-Cree dos bases de datos en PostgreSQL, una para la aplicación y otra para ejecutar los tests.
-El nombre de la base de datos de pruebas será el nombre de la base de datos principal + `test`.
-Por ejemplo, si la base de datos de la aplicación se llama `disneyapi`, la base de datos para
-ejecutar los tests se llamará `disneyapitest`
-
-Puede utilizar docker para crear las bases de datos en PostgreSQL.
-
-```
-docker run -d -e POSTGRES_USER=disneyapi -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=disneyapi -p 5432:5432 --name disneyapi postgres:13
-```
-
-Conectese con un cliente a PostgreSQL y cree la base de datos para los tests: `disneyapitest`
-
-Haga una copia del archivo `.env.example`. A continuación, ingrese los valores de configuración en el archivo `.env`
-
-```
-cp .env.example .env
-```
-
-Las variables de entorno `SENDGRID_API_KEY` y `MAIL_FROM_ADDRESS` son opcionales.
-
-# Uso
-
-Ejecutar los tests
-
-```
-npm test
-```
-
-Ejecutar la aplicación
-
-```
-npm start
-```
-
-Finalmente, navegar a http://localhost:3000/api-docs
+* Verificar que el servidor PostgreSQL se encuentre activo y funcionando
+* Crear dos bases de datos `disneyapi` y `disneyapitest`
+* Crear un archivo .env: `cp .env.example .env`
+  (las variables de entorno `SENDGRID_API_KEY` y `MAIL_FROM_ADDRESS` son opcionales)
+* Instalar dependencias: `npm install`
+* Ejecutar el servidor: `npm run dev`
+* Navegar a http://localhost:3000/api-docs
+* Ejecutas los test `npm test`
